@@ -232,7 +232,7 @@ namespace WindowsFormsApp1
                             FoodRecord record = new FoodRecord(reader2["FoodName"].ToString(), reader2["FoodGroup"].ToString(), reader2["Day"].ToString(), reader2["Weight_g"].ToString(), reader2["Sugars_g"].ToString()
                             , reader2["EnergyDF_kJ"].ToString(), reader2["Total_fat_g"].ToString(), reader2["Saturated_fat_g"].ToString(), reader2["Sodium_mg"].ToString(),
                             reader2["Vegetables_serve"].ToString(), reader2["Fruit_serve"].ToString(), reader2["Fruit_juice_serve"].ToString(), reader2["Grains_serve"].ToString(), reader2["Wholegrains_serve"].ToString()
-                            , reader2["Protein_foods_serve"].ToString(), reader2["Dairy_serve"].ToString(), reader2["Alcoholic_drinks_sd"].ToString());
+                            , reader2["Protein_foods_serve"].ToString(), reader2["Legumes_protein_serve"].ToString(), reader2["Dairy_serve"].ToString(), reader2["Alcoholic_drinks_sd"].ToString());
                             record.Discretionary = DiscretionaryCheck(record);
                             foodList.Add(record);
                         }

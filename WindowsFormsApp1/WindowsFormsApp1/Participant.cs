@@ -14,6 +14,7 @@ namespace WindowsFormsApp1
         private string pregnant;
         private string lactating;
         private Dictionary<string, List<FoodRecord>> foodDict = new Dictionary<string, List<FoodRecord>>();
+        // Component score
         private double veg_Score;
         private double fruit_Score;
         private double alcohol_Score;
@@ -21,8 +22,17 @@ namespace WindowsFormsApp1
         private double unsaturated_Score;
         private double fluids_Score;
         private double waterProportion_Score;
+        private double protein_Score;
+        private double dairy_Score;
         private double grain_Score;
         private double wholeGrainProportion_Score;
+        private double reducedFatProportion_Score;
+        //Variety score
+        private double veg_Variety;
+        private double fruit_Variety;
+        private double grain_Variety;
+        private double protein_Variety;
+        private double dairy_Variety;
 
 
         public Participant(string uID, int age, string gender, string pregnant, string lactating)
@@ -49,11 +59,19 @@ namespace WindowsFormsApp1
         public double Fluids_Score { get => fluids_Score; set => fluids_Score = value; }
         public double Grain_Score { get => grain_Score; set => grain_Score = value; }
         public double WholeGrainProportion_Score { get => wholeGrainProportion_Score; set => wholeGrainProportion_Score = value; }
+        public double Veg_Variety { get => veg_Variety; set => veg_Variety = value; }
+        public double Fruit_Variety { get => fruit_Variety; set => fruit_Variety = value; }
+        public double Grain_Variety { get => grain_Variety; set => grain_Variety = value; }
+        public double Protein_Variety { get => protein_Variety; set => protein_Variety = value; }
+        public double Dairy_Variety { get => dairy_Variety; set => dairy_Variety = value; }
+        public double Protein_Score { get => protein_Score; set => protein_Score = value; }
+        public double Dairy_Score { get => dairy_Score; set => dairy_Score = value; }
+        public double ReducedFatProportion_Score { get => reducedFatProportion_Score; set => reducedFatProportion_Score = value; }
 
         public override string ToString()
         {
-            return "ID: " + UID + ", Age: " + Age.ToString() + ", Gender: " + Gender + ", Pregnant: " + Pregnant + ", Lactation :" + "" + Lactating + 
-                ", Vegetables: " + Veg_Score + ", Fruit: " + Fruit_Score + ", Grain: " + Grain_Score + ", Alcohol: " + Alcohol_Score + ", Discretionary: " + Discretionary_Score +
+            return "ID: " + UID + ", Age: " + Age.ToString() + ", Gender: " + Gender + ", Pregnant: " + Pregnant + ", Lactation :" + "" + Lactating + ", Vegetables: " + Veg_Score + ", Veg Variety: " + Veg_Variety +
+               ", Fruit: " + Fruit_Score + ", Grain: " + Grain_Score + ", Whole Grain: " + WholeGrainProportion_Score +", Protein: " + Protein_Score + ", Dairy: " + Dairy_Score + ", Reduced Fat: " + ReducedFatProportion_Score + ", Alcohol: " + Alcohol_Score + ", Discretionary: " + Discretionary_Score +
                 ", Unsaturated: " + Unsaturated_Score + ", Fluid: " + Fluids_Score + ", Water Proportion: " + WaterProportion_Score;
         }
 
@@ -68,15 +86,22 @@ namespace WindowsFormsApp1
         {
             // Veg
             double vegTotal = 0;
-            int[] vegVarietyPoints = new int[20];
+            int[] vegVarietyPoints = new int[21];  // Maximum variety points is 21
             // Alcohol
             double alcoholTotal = 0;
             // Fruit
             double fruitJuiceDried = 0;
             double fruitWithoutJuice = 0;
+            int[] fruitVarietyPoints = new int[12];
             // Grain
             double totalGrain = 0;
             double totalWholeGrain = 0;
+            int[] grainVarietyPoints = new int[12];
+            // Lean meat
+            double totalMeat = 0;
+            // Dairy
+            double totalDairy = 0;
+            double totalReducedFat = 0;
             // Water
             double totalWater = 0;
             double totalBeverage = 0;
@@ -104,18 +129,27 @@ namespace WindowsFormsApp1
                     // Calculate serve
                     record.CalculateVegServe(ref vegJuice, ref vegTotal);
                     // Calculate veg variety points
-                    //vegVarietyPoints = record.CalculateVegVariety(vegVarietyPoints);
+                    vegVarietyPoints = record.CalculateVegARFS(vegVarietyPoints);
 
                     // Fruit
-                    CalculateFruitServe(record, foodGroupInt, ref fruitJuiceDried, ref fruitWithoutJuice);
+                    record.CalculateFruitServe(foodGroupInt, ref fruitJuiceDried, ref fruitWithoutJuice);
                     // Calculate fruit variety points
-                    //vegVarietyPoints = record.CalculateVegVariety(vegVarietyPoints);
+                    fruitVarietyPoints = record.CalculateFruitARFS(fruitVarietyPoints);
 
                     // Grain and wholegrain
                     record.CalculateGrainServe(ref totalGrain);
                     // Proportion of wholegrain
                     record.CalculateWholeGrainServe(ref totalWholeGrain);
-          
+
+                    // Meat
+                    record.CalculateProteinServe(foodGroupInt, ref totalMeat);
+                    // Calculate meat variety points
+                    //fruitVarietyPoints = record.CalculateFruitARFS(fruitVarietyPoints);
+
+                    // Dairy
+                    record.CalculateDairyServe(foodGroupInt, ref totalDairy);
+                    record.CalculateReducedFatDairyServe(ref totalReducedFat);
+
 
                     // Unsaturated spread and oil
                     if (record.Discretionary == false && ((14301 <= foodGroupInt && foodGroupInt <= 14304)) || (14306 <= foodGroupInt && foodGroupInt <= 14307)
@@ -156,7 +190,7 @@ namespace WindowsFormsApp1
                         || (19801 <= foodGroupInt && foodGroupInt <= 19806) || (19101 <= foodGroupInt && foodGroupInt <= 19105) 
                         || (20101 <= foodGroupInt && foodGroupInt <= 20107) || (20201 <= foodGroupInt && foodGroupInt <= 20202)))
                     {
-                        Console.WriteLine("Fluid " + record.FoodGroup + " " + record.FoodName + " " + record.Weight_g);
+                        //Console.WriteLine("Fluid " + record.FoodGroup + " " + record.FoodName + " " + record.Weight_g);
                         totalBeverage += record.Weight_g;
                         if (11701 <= foodGroupInt && foodGroupInt <= 11703)
                         {
@@ -177,20 +211,40 @@ namespace WindowsFormsApp1
             {
                 fruitJuiceDried = 1;
             }
+            //Fruit DGI
             Fruit_Score = CalculateFruitScore(fruitWithoutJuice + fruitJuiceDried);
+            Fruit_Variety = CalculateVariety(fruitVarietyPoints);
+            // Veg DGI
             Veg_Score = CalculateVegScore(vegTotal);
-            Alcohol_Score = CalculateAlcoholScore(alcoholTotal);
-            Discretionary_Score = CalculateDiscretionaryScore(discretionaryTotalEnergy / 600);
-            Unsaturated_Score = CalculateUnsaturatedScore(totalOil / 7 + totalSpread/10);
-           
-            // Fluid
+            Veg_Variety = CalculateVariety(vegVarietyPoints);
+            //Console.WriteLine("")
+            // Protein DGI
+            Protein_Score = CalculateTotalProteinScore(totalMeat);
+            // Grain DGI
+            Grain_Score = CalculateTotalGrainScore(totalGrain);
+            WholeGrainProportion_Score = CalculateWholeGrainProportionScore(CalculateProportion(totalWholeGrain, totalGrain));
+            // Dairy DGI
+            Dairy_Score = CalculateTotalDairyScore(totalDairy);
+            ReducedFatProportion_Score = CalculateReducedFatProportionScore(CalculateProportion(totalReducedFat, totalDairy));
+            // Fluid DGI
             Fluids_Score = CalculateTotalBeverageScore(totalBeverage);
             waterProportion_Score = CalculateWaterProportionScore(CalculateProportion(totalWater, totalBeverage));
+            // Alcohol DGI
+            Alcohol_Score = CalculateAlcoholScore(alcoholTotal);
+            // Discretionary DGI
+            Discretionary_Score = CalculateDiscretionaryScore(discretionaryTotalEnergy / 600);
+            // USFA DGI
+            Unsaturated_Score = CalculateUnsaturatedScore(totalOil / 7 + totalSpread/10);
         }
 
         private double CalculateProportion(double part, double total)
         {
             return (part / total) * 100;
+        }
+
+        private double CalculateVariety(int[] VarietyPoints)
+        {
+            return (double)VarietyPoints.Sum() / VarietyPoints.Length * 2;
         }
 
         private double CalculateVegScore(double vegTotal)
@@ -215,6 +269,7 @@ namespace WindowsFormsApp1
             }
             else if (string.Equals(Gender, "Female", StringComparison.OrdinalIgnoreCase))
             {
+                // If pregnant
                 if (!(string.Equals(Pregnant, "Not Pregnant", StringComparison.OrdinalIgnoreCase)))
                 {
                     recDailyServe = 5;
@@ -242,34 +297,6 @@ namespace WindowsFormsApp1
             }
             return avg_Veg * 10 / recDailyServe;
         }
-
-        private void CalculateFruitServe(FoodRecord record, int foodGroupInt, ref double fruitJuiceDried, ref double fruitWithoutJuice)
-        {
-            if (record.Discretionary == false)
-            {
-                // Dried fruit
-                if (record.FoodGroup.Equals("16801") || record.FoodGroup.Equals("16802") || record.FoodGroup.Equals("16803"))
-                {
-                    fruitJuiceDried += record.Fruit_serve;
-                    //Console.WriteLine("Dried" + record.FoodGroup + " " + record.Fruit_serve);
-                }
-                // Fruit juice
-                else if (record.Fruit_juice_serve != 0)
-                {
-                    fruitJuiceDried += record.Fruit_juice_serve;
-                    fruitWithoutJuice += record.Fruit_serve - record.Fruit_juice_serve;
-                    //Console.WriteLine("Fruit juice" + record.FoodGroup + " " + record.Fruit_serve);
-                }
-                // Fresh fruit
-                else if ((16101 <= foodGroupInt && foodGroupInt <= 16901) || record.FoodGroup.StartsWith("16") || record.FoodGroup.Equals(16001))
-                {
-                    fruitWithoutJuice += record.Fruit_serve;
-                    //Console.WriteLine("Fruit" + record.FoodGroup + " " + record.Fruit_serve);
-                }
-            }
-        }
-
-
 
         private double CalculateFruitScore(double fruitTotal)
         {
@@ -305,6 +332,7 @@ namespace WindowsFormsApp1
             }
             else if (string.Equals(Gender, "Female", StringComparison.OrdinalIgnoreCase))
             {
+                // If pregnant
                 if (!(string.Equals(Pregnant, "Not Pregnant", StringComparison.OrdinalIgnoreCase)))
                 {
                     recDailyServe = 8.5;
@@ -330,13 +358,125 @@ namespace WindowsFormsApp1
             {
                 return 10;
             }
-            return avg_Grain * 10 / recDailyServe;
+            return avg_Grain * 5 / recDailyServe;
         }
 
         private double CalculateWholeGrainProportionScore(double proportion)
         {
             Console.WriteLine("Proportion of wholegrain:" + uID + ":" + proportion);
             if (proportion > 50)
+            {
+                return 5;
+            }
+            return 0;
+        }
+
+        private double CalculateTotalProteinScore(double totalMeat)
+        {
+            double avg_Meat = totalMeat / FoodDict.Count;
+            Console.WriteLine("Average weight for meat:" + uID + ":" + avg_Meat);
+            double recDailyServe = 1;
+            if (string.Equals(Gender, "Male", StringComparison.OrdinalIgnoreCase))
+            {
+                if (19 <= Age && Age <= 50)
+                {
+                    recDailyServe = 3;
+                }
+                else if (51 <= Age && Age <= 70)
+                {
+                    recDailyServe = 2.5;
+                }
+                else if (Age > 70)
+                {
+                    recDailyServe = 2.5;
+                }
+            }
+            else if (string.Equals(Gender, "Female", StringComparison.OrdinalIgnoreCase))
+            {
+                // If pregnant
+                if (!(string.Equals(Pregnant, "Not Pregnant", StringComparison.OrdinalIgnoreCase)))
+                {
+                    recDailyServe = 3.5;
+                }
+                else if (string.Equals(Lactating, "true", StringComparison.OrdinalIgnoreCase))
+                {
+                    recDailyServe = 2.5;
+                }
+                else if (19 <= Age && Age <= 50)
+                {
+                    recDailyServe = 2.5;
+                }
+                else if (51 <= Age && Age <= 70)
+                {
+                    recDailyServe = 2;
+                }
+                else if (Age > 70)
+                {
+                    recDailyServe = 2;
+                }
+            }
+            if (avg_Meat >= recDailyServe)
+            {
+                return 10;
+            }
+            return avg_Meat * 10 / recDailyServe;
+        }
+
+        private double CalculateTotalDairyScore(double totalDairy)
+        {
+            double avg_Dairy = totalDairy / FoodDict.Count;
+            Console.WriteLine("Average weight for dairy:" + uID + ":" + avg_Dairy);
+            double recDailyServe = 1;
+            if (string.Equals(Gender, "Male", StringComparison.OrdinalIgnoreCase))
+            {
+                if (19 <= Age && Age <= 50)
+                {
+                    recDailyServe = 3;
+                }
+                else if (51 <= Age && Age <= 70)
+                {
+                    recDailyServe = 2.5;
+                }
+                else if (Age > 70)
+                {
+                    recDailyServe = 3.5;
+                }
+            }
+            else if (string.Equals(Gender, "Female", StringComparison.OrdinalIgnoreCase))
+            {
+                // If pregnant
+                if (!(string.Equals(Pregnant, "Not Pregnant", StringComparison.OrdinalIgnoreCase)))
+                {
+                    recDailyServe = 2.5;
+                }
+                else if (string.Equals(Lactating, "true", StringComparison.OrdinalIgnoreCase))
+                {
+                    recDailyServe = 2.5;
+                }
+                else if (19 <= Age && Age <= 50)
+                {
+                    recDailyServe = 2.5;
+                }
+                else if (51 <= Age && Age <= 70)
+                {
+                    recDailyServe = 4;
+                }
+                else if (Age > 70)
+                {
+                    recDailyServe = 4;
+                }
+            }
+            if (avg_Dairy >= recDailyServe)
+            {
+                return 10;
+            }
+            return avg_Dairy * 5 / recDailyServe;
+        }
+
+        private double CalculateReducedFatProportionScore(double proportion)
+        {
+            Console.WriteLine("Proportion of reduced fat:" + uID + ":" + proportion);
+            if (proportion > 100)
             {
                 return 5;
             }
