@@ -33,6 +33,7 @@ namespace WindowsFormsApp1
         private double grain_Variety;
         private double protein_Variety;
         private double dairy_Variety;
+        private double total_Variety;
 
 
         public Participant(string uID, int age, string gender, string pregnant, string lactating)
@@ -71,7 +72,9 @@ namespace WindowsFormsApp1
         public override string ToString()
         {
             return "ID: " + UID + ", Age: " + Age.ToString() + ", Gender: " + Gender + ", Pregnant: " + Pregnant + ", Lactation :" + "" + Lactating + ", Vegetables: " + Veg_Score + ", Veg Variety: " + Veg_Variety +
-               ", Fruit: " + Fruit_Score + ", Grain: " + Grain_Score + ", Whole Grain: " + WholeGrainProportion_Score +", Protein: " + Protein_Score + ", Dairy: " + Dairy_Score + ", Reduced Fat: " + ReducedFatProportion_Score + ", Alcohol: " + Alcohol_Score + ", Discretionary: " + Discretionary_Score +
+               ", Fruit: " + Fruit_Score + ", Fruit Variety: " + Fruit_Variety + ", Grain: " + Grain_Score + ", Whole Grain: " + WholeGrainProportion_Score + ", Grain Variety: " + Grain_Variety +
+               ", Protein: " + Protein_Score + ", Protein Variety: " + Protein_Variety + ", Dairy: " + Dairy_Score + ", Reduced Fat: " + ReducedFatProportion_Score + ", Dairy Variety: " + Dairy_Variety +
+               ", Alcohol: " + Alcohol_Score + ", Discretionary: " + Discretionary_Score +
                 ", Unsaturated: " + Unsaturated_Score + ", Fluid: " + Fluids_Score + ", Water Proportion: " + WaterProportion_Score;
         }
 
@@ -99,15 +102,18 @@ namespace WindowsFormsApp1
             int[] grainVarietyPoints = new int[12];
             // Lean meat
             double totalMeat = 0;
+            int[] proteinVarietyPoints = new int[11];
             // Dairy
             double totalDairy = 0;
             double totalReducedFat = 0;
+            int[] dairyVarietyPoints = new int[5];
             // Water
             double totalWater = 0;
             double totalBeverage = 0;
             // Unsaturated
             double totalSpread = 0;
             double totalOil = 0;
+            double totalAvocado = 0;
             // Discretionary total
             double discretionaryTotalEnergy = 0;
 
@@ -129,27 +135,31 @@ namespace WindowsFormsApp1
                     // Calculate serve
                     record.CalculateVegServe(ref vegJuice, ref vegTotal);
                     // Calculate veg variety points
-                    vegVarietyPoints = record.CalculateVegARFS(vegVarietyPoints);
+                    vegVarietyPoints = record.CalculateVegARFS(foodGroupInt, vegVarietyPoints);
 
                     // Fruit
                     record.CalculateFruitServe(foodGroupInt, ref fruitJuiceDried, ref fruitWithoutJuice);
                     // Calculate fruit variety points
-                    fruitVarietyPoints = record.CalculateFruitARFS(fruitVarietyPoints);
+                    fruitVarietyPoints = record.CalculateFruitARFS(foodGroupInt, fruitVarietyPoints);
 
                     // Grain and wholegrain
                     record.CalculateGrainServe(ref totalGrain);
                     // Proportion of wholegrain
                     record.CalculateWholeGrainServe(ref totalWholeGrain);
+                    // Calculate grain variety points
+                    grainVarietyPoints = record.CalculateGraintARFS(foodGroupInt, grainVarietyPoints);
+
 
                     // Meat
                     record.CalculateProteinServe(foodGroupInt, ref totalMeat);
                     // Calculate meat variety points
-                    //fruitVarietyPoints = record.CalculateFruitARFS(fruitVarietyPoints);
+                    proteinVarietyPoints = record.CalculateProteinARFS(foodGroupInt, proteinVarietyPoints);
 
                     // Dairy
                     record.CalculateDairyServe(foodGroupInt, ref totalDairy);
                     record.CalculateReducedFatDairyServe(ref totalReducedFat);
-
+                    // Calculate dairy variety points
+                    dairyVarietyPoints = record.CalculateDairyARFS(foodGroupInt, dairyVarietyPoints);
 
                     // Unsaturated spread and oil
                     if (record.Discretionary == false && ((14301 <= foodGroupInt && foodGroupInt <= 14304)) || (14306 <= foodGroupInt && foodGroupInt <= 14307)
@@ -160,6 +170,11 @@ namespace WindowsFormsApp1
                         {
                             totalOil += record.Weight_g;
                             //Console.WriteLine("Oil " + " " + record.FoodName + record.FoodGroup + " " + record.Weight_g);
+                        }
+                        if ((record.FoodGroup.Equals("24705")) && record.FoodName.CaseInsensitiveContains("Avocado"))
+                        {
+                            totalAvocado += record.Weight_g;
+                            //Console.WriteLine("Avocado " + " " + record.FoodName + record.FoodGroup + " " + record.Weight_g);
                         }
                         else
                         {
@@ -213,10 +228,8 @@ namespace WindowsFormsApp1
             }
             //Fruit DGI
             Fruit_Score = CalculateFruitScore(fruitWithoutJuice + fruitJuiceDried);
-            Fruit_Variety = CalculateVariety(fruitVarietyPoints);
             // Veg DGI
             Veg_Score = CalculateVegScore(vegTotal);
-            Veg_Variety = CalculateVariety(vegVarietyPoints);
             //Console.WriteLine("")
             // Protein DGI
             Protein_Score = CalculateTotalProteinScore(totalMeat);
@@ -234,7 +247,15 @@ namespace WindowsFormsApp1
             // Discretionary DGI
             Discretionary_Score = CalculateDiscretionaryScore(discretionaryTotalEnergy / 600);
             // USFA DGI
-            Unsaturated_Score = CalculateUnsaturatedScore(totalOil / 7 + totalSpread/10);
+            Unsaturated_Score = CalculateUnsaturatedScore(totalOil / 7 + totalSpread / 10 + totalAvocado / 30);
+            // Variety DGI
+            Veg_Variety = CalculateVariety(vegVarietyPoints);
+            Protein_Variety = CalculateVariety(fruitVarietyPoints);
+            Fruit_Variety = CalculateVariety(fruitVarietyPoints);
+            Dairy_Variety = CalculateVariety(fruitVarietyPoints);
+            Grain_Variety = CalculateVariety(fruitVarietyPoints);
+            
+
         }
 
         private double CalculateProportion(double part, double total)

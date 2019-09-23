@@ -21,6 +21,9 @@ namespace WindowsFormsApp1
 
         private OleDbConnection discretionaryConnection = new OleDbConnection();
         public String UID = "";
+        // Recipe discretionary if 
+        public const double discreSaturatedFat = 0.05;
+        public const double discreSugar = 0.15;
         // 125 group discretionary if >30g sugar/100g
         public const double discre125 = 0.3;
         // 125 group with fruit discretionary if >35g sugar/100g
@@ -49,7 +52,7 @@ namespace WindowsFormsApp1
         // 26202 group discretionary if fast food chain or >5g saturated fat/100g, or 450mg Na/100g
         public const double discre26202SaturatedFat = 0.05;
         public const double discre26202Na = 4.5;
-        // 22203 group always not discretionary
+        // 22203 group discretionary if name is coconut
 
         DateTime start;
         DateTime end;
@@ -371,7 +374,7 @@ namespace WindowsFormsApp1
             if (record.FoodGroup.StartsWith("18703"))
             {
                 double discretionaryIf = record.Weight_g * discre18703;
-                if (record.Saturated_fat_g > discretionaryIf || record.FoodName.Contains("fast food chain"))
+                if (record.Saturated_fat_g > discretionaryIf || record.FoodName.CaseInsensitiveContains("fast food"))
                 {
                     return true;
                 }
@@ -397,18 +400,19 @@ namespace WindowsFormsApp1
                 }
                 return false;
             }
-            // 18707 group discretionary if >10g total fat/100g
+            // 18903 group discretionary if fast food chain or >10g total fat/100g, or >5g saturated fat/100g, or 450mg Na/100g
             if (record.FoodGroup.StartsWith("18903"))
             {
                 double discretionaryIf1 = record.Weight_g * discre18903TotalFat;
                 double discretionaryIf2 = record.Weight_g * discre18903SaturatedFat;
                 double discretionaryIf3 = record.Weight_g * discre18903Na;
-                if (record.Total_fat_g > discretionaryIf1 || record.Saturated_fat_g > discretionaryIf2 || record.Sodium_mg > discre18903Na || record.FoodName.Contains("fast food chain"))
+                if (record.Total_fat_g > discretionaryIf1 || record.Saturated_fat_g > discretionaryIf2 || record.Sodium_mg > discre18903Na || record.FoodName.CaseInsensitiveContains("fast food"))
                 {
                     return true;
                 }
                 return false;
             }
+            // 18906 group discretionary if fast food chain or >30g sugar/100g
             if (record.FoodGroup.StartsWith("18906"))
             {
                 double discretionaryIf = record.Weight_g * discre18906;
@@ -418,19 +422,32 @@ namespace WindowsFormsApp1
                 }
                 return false;
             }
+            // 26202 group discretionary if fast food chain or >5g saturated fat/100g, or 450mg Na/100g
             if (record.FoodGroup.StartsWith("26202"))
             {
                 double discretionaryIf1 = record.Weight_g * discre26202SaturatedFat;
                 double discretionaryIf2 = record.Weight_g * discre26202Na;
-                if (record.Saturated_fat_g > discretionaryIf1 || record.Sodium_mg > discretionaryIf2)
+                if (record.Saturated_fat_g > discretionaryIf1 || record.Sodium_mg > discretionaryIf2 || record.FoodName.CaseInsensitiveContains("fast food"))
                 {
                     return true;
                 }
                 return false;
             }
+            // 22203 group discretionary if name is coconut
             if (record.FoodGroup.StartsWith("22203") && record.FoodName.CaseInsensitiveContains("coconut"))
             {
                 return true;
+            }
+            // Discretionary without food code
+            if (record.FoodGroup.Equals(""))
+            {
+                double discretionaryIf1 = record.Weight_g * discreSaturatedFat;
+                double discretionaryIf2 = record.Weight_g * discreSugar;
+                if (record.Saturated_fat_g > discretionaryIf1 || record.Sugar > discretionaryIf2)
+                {
+                    return true;
+                }
+                return false;
             }
             else
             {
