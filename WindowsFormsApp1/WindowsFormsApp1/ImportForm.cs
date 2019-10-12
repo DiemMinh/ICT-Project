@@ -75,7 +75,7 @@ namespace WindowsFormsApp1
 
 
 
-                String query = "SELECT * FROM Documents where name like 'sfc%' and FolderName Like 'BASE%' and age Is Not Null and gender Is Not Null ;";
+                String query = "SELECT * FROM Documents where name like 'sfc%' and FolderName Like 'BASE%' and age Is Not Null and gender Is Not Null ORDER BY name;";
 
                 command.CommandText = query;
                 OleDbDataReader reader = command.ExecuteReader();

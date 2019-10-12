@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WindowsFormsApp1
 {
-    class Participant
+    class Participant : IComparer<Participant>
     {
         private string uID;
         private int age;
@@ -15,18 +15,20 @@ namespace WindowsFormsApp1
         private string lactating;
         private Dictionary<string, List<FoodRecord>> foodDict = new Dictionary<string, List<FoodRecord>>();
         // Component score
-        private double veg_Score;
-        private double fruit_Score;
-        private double alcohol_Score;
-        private double discretionary_Score;
-        private double unsaturated_Score;
-        private double fluids_Score;
-        private double waterProportion_Score;
-        private double protein_Score;
-        private double dairy_Score;
-        private double grain_Score;
-        private double wholeGrainProportion_Score;
-        private double reducedFatProportion_Score;
+        private double veg_DGI;
+        private double fruit_DGI;
+        private double alcohol_DGI;
+        private double discretionary_DGI;
+        private double unsaturated_DGI;
+        private double fluids_DGI;
+        private double waterProportion_DGI;
+        private double protein_DGI;
+        private double dairy_DGI;
+        private double grain_DGI;
+        private double wholeGrain_DGI;
+        private double reducedFat_DGI;
+        private double final_DGI;
+
         //Variety score
         private double veg_Variety;
         private double fruit_Variety;
@@ -35,6 +37,36 @@ namespace WindowsFormsApp1
         private double dairy_Variety;
         private double total_Variety;
 
+        // Serves
+        private double vegTotal = 0;
+
+        // Alcohol
+        private double alcoholTotal = 0;
+        // Fruit
+        private double fruitTotal = 0;
+
+        // Grain
+        private double grainTotal = 0;
+        private double wholeGrainProportion = 0;
+
+        // Lean meat
+        private double proteinTotal = 0;
+
+        // Dairy
+        private double dairyTotal = 0;
+        private double reduceFatProportion = 0;
+
+        // Water
+        private double waterTotal = 0;
+        private double beverageTotal = 0;
+
+        // Unsaturated
+        private double spreadTotal = 0;
+        private double oilTotal = 0;
+        private double avocadoTotal = 0;
+
+        // Discretionary total
+        private double discretionaryTotalEnergy = 0;
 
         public Participant(string uID, int age, string gender, string pregnant, string lactating)
         {
@@ -51,23 +83,38 @@ namespace WindowsFormsApp1
         public string Pregnant { get => pregnant; set => pregnant = value; }
         public string Lactating { get => lactating; set => lactating = value; }
         public Dictionary<string, List<FoodRecord>> FoodDict { get => foodDict; set => foodDict = value; }
-        public double Veg_Score { get => veg_Score; set => veg_Score = value; }
-        public double Fruit_Score { get => fruit_Score; set => fruit_Score = value; }
-        public double Alcohol_Score { get => alcohol_Score; set => alcohol_Score = value; }
-        private double Discretionary_Score { get => discretionary_Score; set => discretionary_Score = value; }
-        public double Unsaturated_Score { get => unsaturated_Score; set => unsaturated_Score = value; }
-        public double WaterProportion_Score { get => waterProportion_Score; set => waterProportion_Score = value; }
-        public double Fluids_Score { get => fluids_Score; set => fluids_Score = value; }
-        public double Grain_Score { get => grain_Score; set => grain_Score = value; }
-        public double WholeGrainProportion_Score { get => wholeGrainProportion_Score; set => wholeGrainProportion_Score = value; }
+        public double Veg_Score { get => veg_DGI; set => veg_DGI = value; }
+        public double Fruit_Score { get => fruit_DGI; set => fruit_DGI = value; }
+        public double Alcohol_Score { get => alcohol_DGI; set => alcohol_DGI = value; }
+        private double Discretionary_Score { get => discretionary_DGI; set => discretionary_DGI = value; }
+        public double Unsaturated_Score { get => unsaturated_DGI; set => unsaturated_DGI = value; }
+        public double WaterProportion_Score { get => waterProportion_DGI; set => waterProportion_DGI = value; }
+        public double Fluids_Score { get => fluids_DGI; set => fluids_DGI = value; }
+        public double Grain_Score { get => grain_DGI; set => grain_DGI = value; }
+        public double WholeGrainProportion_Score { get => wholeGrain_DGI; set => wholeGrain_DGI = value; }
         public double Veg_Variety { get => veg_Variety; set => veg_Variety = value; }
         public double Fruit_Variety { get => fruit_Variety; set => fruit_Variety = value; }
         public double Grain_Variety { get => grain_Variety; set => grain_Variety = value; }
         public double Protein_Variety { get => protein_Variety; set => protein_Variety = value; }
         public double Dairy_Variety { get => dairy_Variety; set => dairy_Variety = value; }
-        public double Protein_Score { get => protein_Score; set => protein_Score = value; }
-        public double Dairy_Score { get => dairy_Score; set => dairy_Score = value; }
-        public double ReducedFatProportion_Score { get => reducedFatProportion_Score; set => reducedFatProportion_Score = value; }
+        public double Protein_Score { get => protein_DGI; set => protein_DGI = value; }
+        public double Dairy_Score { get => dairy_DGI; set => dairy_DGI = value; }
+        public double ReducedFatProportion_Score { get => reducedFat_DGI; set => reducedFat_DGI = value; }
+        public double VegTotal { get => vegTotal; set => vegTotal = value; }
+        public double AlcoholTotal { get => alcoholTotal; set => alcoholTotal = value; }
+        public double FruitTotal { get => fruitTotal; set => fruitTotal = value; }
+        public double TotalGrain { get => grainTotal; set => grainTotal = value; }
+        public double TotalWholeGrain { get => wholeGrainProportion; set => wholeGrainProportion = value; }
+        public double TotalMeat { get => proteinTotal; set => proteinTotal = value; }
+        public double TotalDairy { get => dairyTotal; set => dairyTotal = value; }
+        public double TotalReducedFat { get => reduceFatProportion; set => reduceFatProportion = value; }
+        public double TotalWater { get => waterTotal; set => waterTotal = value; }
+        public double TotalBeverage { get => beverageTotal; set => beverageTotal = value; }
+        public double TotalSpread { get => spreadTotal; set => spreadTotal = value; }
+        public double TotalOil { get => oilTotal; set => oilTotal = value; }
+        public double TotalAvocado { get => avocadoTotal; set => avocadoTotal = value; }
+        public double DiscretionaryTotalEnergy { get => discretionaryTotalEnergy; set => discretionaryTotalEnergy = value; }
+        public double Final_DGI { get => final_DGI; set => final_DGI = value; }
 
         public override string ToString()
         {
@@ -84,6 +131,18 @@ namespace WindowsFormsApp1
             return "ID:" + uID + ", " + "Age:" + age.ToString() + ", " + gender + ", " + pregnant + ", " + "Lactation:" + lactating;
         }
 
+        public int Compare(Participant x, Participant y)
+        {
+            if (x.uID == "" || y.uID == "")
+            {
+                return 0;
+            }
+
+            // CompareTo() method 
+            return x.uID.CompareTo(y.uID);
+
+        }
+
         // Vegetables
         public void CalculateScore()
         {
@@ -94,37 +153,6 @@ namespace WindowsFormsApp1
             int[] grainVarietyPoints = new int[13];
             int[] proteinVarietyPoints = new int[12];
             int[] dairyVarietyPoints = new int[6];
-
-            // Veg
-            double vegTotal = 0;
-
-            // Alcohol
-            double alcoholTotal = 0;
-            // Fruit
-            double fruitTotal = 0;
-
-            // Grain
-            double totalGrain = 0;
-            double totalWholeGrain = 0;
-
-            // Lean meat
-            double totalMeat = 0;
-
-            // Dairy
-            double totalDairy = 0;
-            double totalReducedFat = 0;
-
-            // Water
-            double totalWater = 0;
-            double totalBeverage = 0;
-
-            // Unsaturated
-            double totalSpread = 0;
-            double totalOil = 0;
-            double totalAvocado = 0;
-
-            // Discretionary total
-            double discretionaryTotalEnergy = 0;
 
             List<String> abc = new List<String>();
             foreach (KeyValuePair<string, List<FoodRecord>> item in FoodDict)
@@ -166,17 +194,17 @@ namespace WindowsFormsApp1
                     record.CalculateFruitServe(foodGroupInt, ref fruitJuiceDried, ref fruitTotal);
 
                     // Grain and wholegrain
-                    record.CalculateGrainServe(ref totalGrain);
+                    record.CalculateGrainServe(ref grainTotal);
                     // Proportion of wholegrain
-                    record.CalculateWholeGrainServe(ref totalWholeGrain);
+                    record.CalculateWholeGrainServe(ref wholeGrainProportion);
 
                     // Meat
-                    record.CalculateProteinServe(foodGroupInt, ref totalMeat);
+                    record.CalculateProteinServe(foodGroupInt, ref proteinTotal);
 
                     // Dairy
-                    record.CalculateDairyServe(foodGroupInt, ref totalDairy);
+                    record.CalculateDairyServe(foodGroupInt, ref dairyTotal);
                     // Reduced fat
-                    record.CalculateReducedFatDairyServe(ref totalReducedFat);
+                    record.CalculateReducedFatDairyServe(ref reduceFatProportion);
 
                     // Unsaturated spread and oil
                     if (record.Discretionary == false && ((14301 <= foodGroupInt && foodGroupInt <= 14304)) || (14306 <= foodGroupInt && foodGroupInt <= 14307)
@@ -185,17 +213,17 @@ namespace WindowsFormsApp1
                     {
                         if (14401 <= foodGroupInt && foodGroupInt <= 14403)
                         {
-                            totalOil += record.Weight_g;
+                            oilTotal += record.Weight_g;
                             //Console.WriteLine("Oil " + " " + record.FoodName + record.FoodGroup + " " + record.Weight_g);
                         }
                         if ((record.FoodGroup.Equals("24705")) && record.FoodName.CaseInsensitiveContains("Avocado"))
                         {
-                            totalAvocado += record.Weight_g;
+                            avocadoTotal += record.Weight_g;
                             //Console.WriteLine("Avocado " + " " + record.FoodName + record.FoodGroup + " " + record.Weight_g);
                         }
                         else
                         {
-                            totalSpread += record.Weight_g;
+                            spreadTotal += record.Weight_g;
                             //Console.WriteLine("Spread " + " " + record.FoodName + record.FoodGroup + " " + record.Weight_g);
                         }
                     }
@@ -223,10 +251,10 @@ namespace WindowsFormsApp1
                         || (20101 <= foodGroupInt && foodGroupInt <= 20107) || (20201 <= foodGroupInt && foodGroupInt <= 20202)))
                     {
                         //Console.WriteLine("Fluid " + record.FoodGroup + " " + record.FoodName + " " + record.Weight_g);
-                        totalBeverage += record.Weight_g;
+                        beverageTotal += record.Weight_g;
                         if (11701 <= foodGroupInt && foodGroupInt <= 11703)
                         {
-                            totalWater += record.Weight_g;
+                            waterTotal += record.Weight_g;
                         }
                     }
 
@@ -246,22 +274,22 @@ namespace WindowsFormsApp1
             Veg_Score = CalculateVegScore(vegTotal);
             //Console.WriteLine("")
             // Protein DGI
-            Protein_Score = CalculateTotalProteinScore(totalMeat);
+            Protein_Score = CalculateTotalProteinScore(proteinTotal);
             // Grain DGI
-            Grain_Score = CalculateTotalGrainScore(totalGrain);
-            WholeGrainProportion_Score = CalculateWholeGrainProportionScore(CalculateProportion(totalWholeGrain, totalGrain));
+            Grain_Score = CalculateTotalGrainScore(grainTotal);
+            WholeGrainProportion_Score = CalculateWholeGrainProportionScore(CalculateProportion(wholeGrainProportion, grainTotal));
             // Dairy DGI
-            Dairy_Score = CalculateTotalDairyScore(totalDairy);
-            ReducedFatProportion_Score = CalculateReducedFatProportionScore(CalculateProportion(totalReducedFat, totalDairy));
+            Dairy_Score = CalculateTotalDairyScore(dairyTotal);
+            ReducedFatProportion_Score = CalculateReducedFatProportionScore(CalculateProportion(reduceFatProportion, dairyTotal));
             // Fluid DGI
-            Fluids_Score = CalculateTotalBeverageScore(totalBeverage);
-            waterProportion_Score = CalculateWaterProportionScore(CalculateProportion(totalWater, totalBeverage));
+            Fluids_Score = CalculateTotalBeverageScore(beverageTotal);
+            waterProportion_DGI = CalculateWaterProportionScore(CalculateProportion(waterTotal, beverageTotal));
             // Alcohol DGI
             Alcohol_Score = CalculateAlcoholScore(alcoholTotal);
             // Discretionary DGI
             Discretionary_Score = CalculateDiscretionaryScore(discretionaryTotalEnergy / 600);
             // USFA DGI
-            Unsaturated_Score = CalculateUnsaturatedScore(totalOil / 7 + totalSpread / 10 + totalAvocado / 30);
+            Unsaturated_Score = CalculateUnsaturatedScore(oilTotal / 7 + spreadTotal / 10 + avocadoTotal / 30);
             // Variety DGI
             Veg_Variety = CalculateVarietyScore(vegVarietyPoints);
             Protein_Variety = CalculateVarietyScore(fruitVarietyPoints);

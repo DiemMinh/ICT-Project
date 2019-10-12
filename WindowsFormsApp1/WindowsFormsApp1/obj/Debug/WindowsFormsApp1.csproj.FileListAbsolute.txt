@@ -149,3 +149,6 @@ D:\GitHub\export\ICT-Project-master\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\
 D:\GitHub\export\ICT-Project-master\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\CircularProgressBar.dll
 D:\GitHub\export\ICT-Project-master\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\WinFormAnimation.dll
 D:\GitHub\export\ICT-Project-master\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.csproj.CopyComplete
+D:\GitHub\ICT-Project\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\CircularProgressBar.dll
+D:\GitHub\ICT-Project\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\WinFormAnimation.dll
+D:\GitHub\ICT-Project\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.csproj.CopyComplete
