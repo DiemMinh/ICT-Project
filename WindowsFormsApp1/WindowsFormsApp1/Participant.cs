@@ -87,79 +87,96 @@ namespace WindowsFormsApp1
         // Vegetables
         public void CalculateScore()
         {
+            // Variety
+            // Maximum variety points is 21 for veg
+            int[] vegVarietyPoints = new int[21];
+            int[] fruitVarietyPoints = new int[12];
+            int[] grainVarietyPoints = new int[13];
+            int[] proteinVarietyPoints = new int[12];
+            int[] dairyVarietyPoints = new int[6];
+
             // Veg
             double vegTotal = 0;
-            int[] vegVarietyPoints = new int[21];  // Maximum variety points is 21
+
             // Alcohol
             double alcoholTotal = 0;
             // Fruit
-            double fruitJuiceDried = 0;
-            double fruitWithoutJuice = 0;
-            int[] fruitVarietyPoints = new int[12];
+            double fruitTotal = 0;
+
             // Grain
             double totalGrain = 0;
             double totalWholeGrain = 0;
-            int[] grainVarietyPoints = new int[12];
+
             // Lean meat
             double totalMeat = 0;
-            int[] proteinVarietyPoints = new int[11];
+
             // Dairy
             double totalDairy = 0;
             double totalReducedFat = 0;
-            int[] dairyVarietyPoints = new int[5];
+
             // Water
             double totalWater = 0;
             double totalBeverage = 0;
+
             // Unsaturated
             double totalSpread = 0;
             double totalOil = 0;
             double totalAvocado = 0;
+
             // Discretionary total
             double discretionaryTotalEnergy = 0;
 
             List<String> abc = new List<String>();
             foreach (KeyValuePair<string, List<FoodRecord>> item in FoodDict)
             {
-                // Maximum 1 serve of vegetables juice per day
+                // Maximum 1 serve of vegetables juice and fruit juice and dried fruit per day
+                double fruitJuiceDried = 0;
                 double vegJuice = 0;
                 foreach (FoodRecord record in item.Value)
                 {
-     
+
                     int foodGroupInt = 0;
+                    // If food group is not empty then they are not mixed dishes and food group can be converted to integer to set limit ranges
                     if (record.FoodGroup != "")
                     {
                         foodGroupInt = Int32.Parse(record.FoodGroup);
                     }
-                    
+
+                    // Variety
+                    // General RULES if no relevant food group codes (discretionary is not included in variety scoring):
+                    if (record.Discretionary == false)
+                    {
+                        if (record.FoodGroup == "")
+                        {
+                            // If no food code, look for a key word in food description
+                            record.checkVarietyWithoutCode(vegVarietyPoints, fruitVarietyPoints, grainVarietyPoints, proteinVarietyPoints, dairyVarietyPoints);
+                        }
+                        else
+                        {
+                            // If has food code, look for food code
+                            record.checkVarietyWithCode(vegVarietyPoints, fruitVarietyPoints, grainVarietyPoints, proteinVarietyPoints, dairyVarietyPoints, foodGroupInt);
+                        }
+                    }
+
                     // Vegetables 
                     // Calculate serve
                     record.CalculateVegServe(ref vegJuice, ref vegTotal);
-                    // Calculate veg variety points
-                    vegVarietyPoints = record.CalculateVegARFS(foodGroupInt, vegVarietyPoints);
 
                     // Fruit
-                    record.CalculateFruitServe(foodGroupInt, ref fruitJuiceDried, ref fruitWithoutJuice);
-                    // Calculate fruit variety points
-                    fruitVarietyPoints = record.CalculateFruitARFS(foodGroupInt, fruitVarietyPoints);
+                    record.CalculateFruitServe(foodGroupInt, ref fruitJuiceDried, ref fruitTotal);
 
                     // Grain and wholegrain
                     record.CalculateGrainServe(ref totalGrain);
                     // Proportion of wholegrain
                     record.CalculateWholeGrainServe(ref totalWholeGrain);
-                    // Calculate grain variety points
-                    grainVarietyPoints = record.CalculateGraintARFS(foodGroupInt, grainVarietyPoints);
-
 
                     // Meat
                     record.CalculateProteinServe(foodGroupInt, ref totalMeat);
-                    // Calculate meat variety points
-                    proteinVarietyPoints = record.CalculateProteinARFS(foodGroupInt, proteinVarietyPoints);
 
                     // Dairy
                     record.CalculateDairyServe(foodGroupInt, ref totalDairy);
+                    // Reduced fat
                     record.CalculateReducedFatDairyServe(ref totalReducedFat);
-                    // Calculate dairy variety points
-                    dairyVarietyPoints = record.CalculateDairyARFS(foodGroupInt, dairyVarietyPoints);
 
                     // Unsaturated spread and oil
                     if (record.Discretionary == false && ((14301 <= foodGroupInt && foodGroupInt <= 14304)) || (14306 <= foodGroupInt && foodGroupInt <= 14307)
@@ -200,9 +217,9 @@ namespace WindowsFormsApp1
 
                     // Water and fluid
                     if (record.Discretionary == false && ((11701 <= foodGroupInt && foodGroupInt <= 11703) ||
-                        (11101 <= foodGroupInt && foodGroupInt <= 11604) ||   (11801 <= foodGroupInt && foodGroupInt <= 11806) ||
-                        (19101 <= foodGroupInt && foodGroupInt <= 19105) || foodGroupInt == 19109 
-                        || (19801 <= foodGroupInt && foodGroupInt <= 19806) || (19101 <= foodGroupInt && foodGroupInt <= 19105) 
+                        (11101 <= foodGroupInt && foodGroupInt <= 11604) || (11801 <= foodGroupInt && foodGroupInt <= 11806) ||
+                        (19101 <= foodGroupInt && foodGroupInt <= 19105) || foodGroupInt == 19109
+                        || (19801 <= foodGroupInt && foodGroupInt <= 19806) || (19101 <= foodGroupInt && foodGroupInt <= 19105)
                         || (20101 <= foodGroupInt && foodGroupInt <= 20107) || (20201 <= foodGroupInt && foodGroupInt <= 20202)))
                     {
                         //Console.WriteLine("Fluid " + record.FoodGroup + " " + record.FoodName + " " + record.Weight_g);
@@ -212,22 +229,19 @@ namespace WindowsFormsApp1
                             totalWater += record.Weight_g;
                         }
                     }
-                    // 250 or 2000?
-                    
+
+
                 }
             }
-
+            /*
             abc.Sort();
             foreach (String record in abc)
             {
                 Console.WriteLine(record);
             }
-            if (fruitJuiceDried > 1)
-            {
-                fruitJuiceDried = 1;
-            }
+            */
             //Fruit DGI
-            Fruit_Score = CalculateFruitScore(fruitWithoutJuice + fruitJuiceDried);
+            Fruit_Score = CalculateFruitScore(fruitTotal);
             // Veg DGI
             Veg_Score = CalculateVegScore(vegTotal);
             //Console.WriteLine("")
@@ -249,12 +263,12 @@ namespace WindowsFormsApp1
             // USFA DGI
             Unsaturated_Score = CalculateUnsaturatedScore(totalOil / 7 + totalSpread / 10 + totalAvocado / 30);
             // Variety DGI
-            Veg_Variety = CalculateVariety(vegVarietyPoints);
-            Protein_Variety = CalculateVariety(fruitVarietyPoints);
-            Fruit_Variety = CalculateVariety(fruitVarietyPoints);
-            Dairy_Variety = CalculateVariety(fruitVarietyPoints);
-            Grain_Variety = CalculateVariety(fruitVarietyPoints);
-            
+            Veg_Variety = CalculateVarietyScore(vegVarietyPoints);
+            Protein_Variety = CalculateVarietyScore(fruitVarietyPoints);
+            Fruit_Variety = CalculateVarietyScore(fruitVarietyPoints);
+            Dairy_Variety = CalculateVarietyScore(fruitVarietyPoints);
+            Grain_Variety = CalculateVarietyScore(fruitVarietyPoints);
+
 
         }
 
@@ -263,7 +277,7 @@ namespace WindowsFormsApp1
             return (part / total) * 100;
         }
 
-        private double CalculateVariety(int[] VarietyPoints)
+        private double CalculateVarietyScore(int[] VarietyPoints)
         {
             return (double)VarietyPoints.Sum() / VarietyPoints.Length * 2;
         }
@@ -518,6 +532,7 @@ namespace WindowsFormsApp1
             {
                 return 5;
             }
+            // 250 or 2000?
             return avg_BeverageWeight * 5 / 2000;
         }
 
@@ -566,12 +581,12 @@ namespace WindowsFormsApp1
         {
             double avg_Alcohol = alcoholTotal / FoodDict.Count;
             Console.WriteLine("Average serve for Alcohol:" + uID + ":" + avg_Alcohol);
-           
-                if (avg_Alcohol > 2)
-                {
-                    return 0;
-                }
-                return 10;
+
+            if (avg_Alcohol > 2)
+            {
+                return 0;
+            }
+            return 10;
         }
 
         private double CalculateDiscretionaryScore(double discretionaryServe)

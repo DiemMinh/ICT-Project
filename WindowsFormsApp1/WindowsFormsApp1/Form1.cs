@@ -30,11 +30,11 @@ namespace WindowsFormsApp1
                 Persist Security Info=False;";
             loginConnection.ConnectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|\\login.accdb;
                 Persist Security Info=False;";
-
+            //check thi part!!!!!!!!!!!!!!!!!!!!!!
             connection.Open();
-            check.Text = "Wolfgang";
-            connection.Close();
             
+            connection.Close();
+            //check thi part!!!!!!!!!!!!!!!!!!!!!!
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
@@ -75,6 +75,16 @@ namespace WindowsFormsApp1
                 MessageBox.Show("Username and password is not correct");
             }
             loginConnection.Close();
+        }
+
+        private void ToolTip2_Popup(object sender, PopupEventArgs e)
+        {
+
+        }
+
+        private void Check_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
