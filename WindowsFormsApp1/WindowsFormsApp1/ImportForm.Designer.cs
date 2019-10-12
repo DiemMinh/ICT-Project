@@ -154,7 +154,7 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.Goldenrod;
-            this.label1.Location = new System.Drawing.Point(437, 367);
+            this.label1.Location = new System.Drawing.Point(437, 416);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(137, 25);
             this.label1.TabIndex = 16;
@@ -180,7 +180,7 @@
             // 
             this.button2.BackColor = System.Drawing.Color.Goldenrod;
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(699, 373);
+            this.button2.Location = new System.Drawing.Point(699, 367);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(89, 30);
             this.button2.TabIndex = 18;
@@ -188,18 +188,18 @@
             this.toolTip4.SetToolTip(this.button2, "Click to Export the Calculation as an Excel file");
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Visible = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // pictureBox5
             // 
             this.pictureBox5.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox5.Image")));
-            this.pictureBox5.Location = new System.Drawing.Point(641, 347);
+            this.pictureBox5.Location = new System.Drawing.Point(637, 337);
             this.pictureBox5.Name = "pictureBox5";
             this.pictureBox5.Size = new System.Drawing.Size(56, 66);
             this.pictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox5.TabIndex = 19;
             this.pictureBox5.TabStop = false;
             this.pictureBox5.Visible = false;
-            this.pictureBox5.Click += new System.EventHandler(this.PictureBox5_Click);
             // 
             // ImportForm
             // 

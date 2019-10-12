@@ -14,7 +14,7 @@ namespace WindowsFormsApp1
     public partial class ImportForm : Form
     {
         private OleDbConnection discretionaryConnection = new OleDbConnection();
-        
+
         HashSet<string> discretionaryList = new HashSet<string>();
         List<string> chosenDate = new List<string>();
         HashSet<Participant> participantList = new HashSet<Participant>();
@@ -43,6 +43,7 @@ namespace WindowsFormsApp1
                     string fileName = openFileDialog.FileName;
 
                     connection.ConnectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileName + ";Persist Security Info=False;";
+                    checkedListBox1.Items.Clear();
                     importUser();
                     richTextBox1.Show();
                     pictureBox2.Show();
@@ -90,85 +91,87 @@ namespace WindowsFormsApp1
             }
             catch (Exception ex) { MessageBox.Show("opps" + ex); }
         }
-    
+
 
 
         private void CalculateBtn_Click(object sender, EventArgs e)
         {
-            pictureBox4.Show();
+
             label1.Show();
-            try
-            {
-                foreach (Participant userID in checkedListBox1.CheckedItems)
+            if (calculateBtn.Text.Equals("Calculate") && participantList.Count == 0) {
+                try
                 {
-                    participantList.Add(userID);
-                }
-                //dayCount = checkedListBox1.CheckedItems.Count;
-                //test1.Text = dayCount.ToString();
-                //test1.Text = foodGroup[18];
-                foreach (Participant person in participantList)
-                {
-                    connection.Open();
-                    OleDbCommand command1 = new OleDbCommand();
-
-                    command1.Connection = connection;
-                    String query1 = "SELECT DISTINCT Day FROM DocFoods WHERE DocName = '" + person.UID + "'";
-                    command1.CommandText = query1;
-                    OleDbDataReader reader1 = command1.ExecuteReader();
-                    HashSet<String> dayList = new HashSet<string>();
-                    while (reader1.Read())
+                    foreach (Participant userID in checkedListBox1.CheckedItems)
                     {
-                        dayList.Add(reader1["Day"].ToString());
+                        participantList.Add(userID);
                     }
-                    connection.Close();
-
-                    foreach (String day in dayList)
+                    //dayCount = checkedListBox1.CheckedItems.Count;
+                    //test1.Text = dayCount.ToString();
+                    //test1.Text = foodGroup[18];
+                    foreach (Participant person in participantList)
                     {
                         connection.Open();
-                        OleDbCommand command2 = new OleDbCommand();
-                        command2.Connection = connection;
+                        OleDbCommand command1 = new OleDbCommand();
 
-                        String query2 = "SELECT * FROM DocFoods WHERE (((DocName)='" + person.UID + "') AND ((Day) = '" + day + "') AND (Not(ErrorCode) = 2))";
-                        command2.CommandText = query2;
-                        OleDbDataReader reader2 = command2.ExecuteReader();
-                        List<FoodRecord> foodList = new List<FoodRecord>();
-                        while (reader2.Read())
+                        command1.Connection = connection;
+                        String query1 = "SELECT DISTINCT Day FROM DocFoods WHERE DocName = '" + person.UID + "'";
+                        command1.CommandText = query1;
+                        OleDbDataReader reader1 = command1.ExecuteReader();
+                        while (reader1.Read())
                         {
-                            FoodRecord record = new FoodRecord(reader2["FoodName"].ToString(), reader2["FoodGroup"].ToString(), reader2["Day"].ToString(), reader2["Weight_g"].ToString(), reader2["Sugars_g"].ToString()
-                            , reader2["EnergyDF_kJ"].ToString(), reader2["Total_fat_g"].ToString(), reader2["Saturated_fat_g"].ToString(), reader2["Sodium_mg"].ToString(),
-                            reader2["Vegetables_serve"].ToString(), reader2["Fruit_serve"].ToString(), reader2["Fruit_juice_serve"].ToString(), reader2["Grains_serve"].ToString(), reader2["Wholegrains_serve"].ToString()
-                            , reader2["Protein_foods_serve"].ToString(), reader2["Legumes_protein_serve"].ToString(), reader2["Dairy_serve"].ToString(), reader2["Alcoholic_drinks_sd"].ToString());
-                            record.Discretionary = record.DiscretionaryCheck(discretionaryList);
-                            foodList.Add(record);
-                        }
-                        person.FoodDict.Add(day, foodList);
-                        connection.Close();
-                    }
-                    person.CalculateScore();
+                            OleDbCommand command2 = new OleDbCommand();
+                            command2.Connection = connection;
 
-                    if (person.UID == "SFC059")
-                    {
-                        int count = 0;
-                        Console.WriteLine(person.UID.ToString());
-                        foreach (KeyValuePair<string, List<FoodRecord>> item in person.FoodDict)
-                        {
-                            count++;
-                            Console.WriteLine("Day" + count + ": {0}", item.Key);
-                            foreach (FoodRecord record in item.Value)
+                            String query2 = "SELECT * FROM DocFoods WHERE (((DocName)='" + person.UID + "') AND ((Day) = '" + reader1["Day"].ToString() + "') AND (Not(ErrorCode) = 2))";
+                            command2.CommandText = query2;
+                            OleDbDataReader reader2 = command2.ExecuteReader();
+                            List<FoodRecord> foodList = new List<FoodRecord>();
+                            while (reader2.Read())
                             {
-                                Console.WriteLine(record.ToString());
+                                FoodRecord record = new FoodRecord(reader2["FoodName"].ToString(), reader2["FoodGroup"].ToString(), reader2["Day"].ToString(), reader2["Weight_g"].ToString(), reader2["Sugars_g"].ToString()
+                                , reader2["EnergyDF_kJ"].ToString(), reader2["Total_fat_g"].ToString(), reader2["Saturated_fat_g"].ToString(), reader2["Sodium_mg"].ToString(),
+                                reader2["Vegetables_serve"].ToString(), reader2["Fruit_serve"].ToString(), reader2["Fruit_juice_serve"].ToString(), reader2["Grains_serve"].ToString(), reader2["Wholegrains_serve"].ToString()
+                                , reader2["Protein_foods_serve"].ToString(), reader2["Legumes_protein_serve"].ToString(), reader2["Dairy_serve"].ToString(), reader2["Alcoholic_drinks_sd"].ToString());
+                                record.Discretionary = record.DiscretionaryCheck(discretionaryList);
+                                foodList.Add(record);
                             }
+                            person.FoodDict.Add(reader1["Day"].ToString(), foodList);
                         }
+                        connection.Close();
+
+
+                        person.CalculateScore();
+
+
+                        Console.WriteLine();
+                        Console.WriteLine(person.ToString());
+                        Console.WriteLine("Number of day: " + person.FoodDict.Count);
                     }
-                    Console.WriteLine();
-                    Console.WriteLine(person.ToString());
-                    Console.WriteLine("Number of day: " + person.FoodDict.Count);
+                    pictureBox4.Show();
+                    label1.Text = "The file is Ready to be Exported";
+                    calculateBtn.Text = "Reset";
+                    button2.Show();
+                    pictureBox5.Show();
                 }
-                button2.Show();
-                pictureBox5.Show();
+                catch (Exception ex) { MessageBox.Show("opps" + ex); }
             }
-            catch (Exception ex) { MessageBox.Show("opps" + ex); }
+            
+            else if (calculateBtn.Text.Equals("Reset"))
+            {
+                foreach (Participant person in participantList)
+                {
+                    person.Reset();
+                }
+                participantList.Clear();
+                calculateBtn.Text = "Calculate";
+                label1.Text = "Please wait...";
+                label1.Hide();
+                pictureBox4.Hide();
+                button2.Hide();
+                pictureBox5.Hide();
+            }
         }
+
 
         //calc
         public void discretionaryImport()
@@ -188,7 +191,7 @@ namespace WindowsFormsApp1
             discretionaryConnection.Close();
 
         }
-       
+
 
         private void PictureBox3_Click(object sender, EventArgs e)
         {
@@ -202,7 +205,6 @@ namespace WindowsFormsApp1
 
         private void Label1_Click(object sender, EventArgs e)
         {
-
         }
 
         private void CheckedListBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -216,7 +218,7 @@ namespace WindowsFormsApp1
                 UID = checkedListBox1.Text;
                 command.CommandText = query;
                 OleDbDataReader reader = command.ExecuteReader();
-  
+
 
                 connection.Close();
 
@@ -231,9 +233,9 @@ namespace WindowsFormsApp1
                 connection.Open();
                 OleDbCommand command = new OleDbCommand();
                 command.Connection = connection;
-                
+
                 OleDbDataReader reader = command.ExecuteReader();
-               
+
 
                 OleDbCommand command1 = new OleDbCommand();
                 command1.Connection = connection;
@@ -241,7 +243,7 @@ namespace WindowsFormsApp1
 
                 command1.CommandText = query1;
                 OleDbDataReader reader1 = command1.ExecuteReader();
-               
+
 
                 OleDbCommand command2 = new OleDbCommand();
                 command2.Connection = connection;
@@ -249,7 +251,7 @@ namespace WindowsFormsApp1
 
                 command2.CommandText = query2;
                 OleDbDataReader reader2 = command2.ExecuteReader();
-               
+
 
                 connection.Close();
 
@@ -259,16 +261,28 @@ namespace WindowsFormsApp1
 
         private void Button1_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < checkedListBox1.Items.Count; i++)
+            if (button1.Text.Equals("Select All"))
             {
-                checkedListBox1.SetItemChecked(i, true);
+                for (int i = 0; i < checkedListBox1.Items.Count; i++)
+                {
+                    checkedListBox1.SetItemChecked(i, true);
+                }
+                button1.Text = "Unselect All";
+            }
+            else
+            {
+                for (int i = 0; i < checkedListBox1.Items.Count; i++)
+                {
+                    checkedListBox1.SetItemChecked(i, false);
+                }
+                button1.Text = "Select All";
             }
         }
 
-        private void PictureBox5_Click(object sender, EventArgs e)
+        private void button2_Click(object sender, EventArgs e)
         {
 
         }
     }
-    
+
 }

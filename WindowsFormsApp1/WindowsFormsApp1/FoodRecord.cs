@@ -215,6 +215,7 @@ namespace WindowsFormsApp1
             }
         }
 
+        // Reduced fat
         public void CalculateReducedFatDairyServe(ref double totalReducedFat)
         {
             // Reduced Fat
@@ -224,6 +225,69 @@ namespace WindowsFormsApp1
                 // Calculating serve
                 //Console.WriteLine("Reduced Dairy " + " " + FoodName + " " + FoodGroup + " " + "Dairy Serve " + Dairy);
                 totalReducedFat += Dairy;
+            }
+        }
+
+        // Unsaturated Fat
+        public void CalculateUnsaturatedFatServe(int foodGroupInt, ref double oilTotal, ref double avocadoTotal, ref double spreadTotal)
+        {
+            if (Discretionary == false && ((14301 <= foodGroupInt && foodGroupInt <= 14304)) || (14306 <= foodGroupInt && foodGroupInt <= 14307)
+                       || (14401 <= foodGroupInt && foodGroupInt <= 14403) || FoodGroup.Equals("22102") || FoodGroup.Equals("22202") ||
+                       FoodGroup.Equals("22204") || ((FoodGroup.Equals("24705")) && FoodName.CaseInsensitiveContains("Avocado")))
+            {
+                if (14401 <= foodGroupInt && foodGroupInt <= 14403)
+                {
+                    oilTotal += Weight_g;
+                    //Console.WriteLine("Oil " + " " + record.FoodName + record.FoodGroup + " " + record.Weight_g);
+                }
+                if ((FoodGroup.Equals("24705")) && FoodName.CaseInsensitiveContains("Avocado"))
+                {
+                    avocadoTotal += Weight_g;
+                    //Console.WriteLine("Avocado " + " " + record.FoodName + record.FoodGroup + " " + record.Weight_g);
+                }
+                else
+                {
+                    spreadTotal += Weight_g;
+                    //Console.WriteLine("Spread " + " " + record.FoodName + record.FoodGroup + " " + record.Weight_g);
+                }
+            }
+        }
+
+        // Alcohol
+        public void CalculateAlcoholSD(int foodGroupInt, ref double alcoholTotal)
+        {
+            if (Discretionary == true && ((29101 <= foodGroupInt && foodGroupInt <= 29505)))
+            {
+                //Console.WriteLine("Alcohol " + record.FoodGroup + " " + record.Alcoholic_drink_sd);
+                alcoholTotal += Alcoholic_drink_sd;
+            }
+        }
+
+        // Fluid
+        public void calculateFluidWeight(int foodGroupInt, ref double beverageTotal, ref double waterTotal)
+        {
+            if (Discretionary == false && ((11701 <= foodGroupInt && foodGroupInt <= 11703) ||
+                       (11101 <= foodGroupInt && foodGroupInt <= 11604) || (11801 <= foodGroupInt && foodGroupInt <= 11806) ||
+                       (19101 <= foodGroupInt && foodGroupInt <= 19105) || foodGroupInt == 19109
+                       || (19801 <= foodGroupInt && foodGroupInt <= 19806) || (19101 <= foodGroupInt && foodGroupInt <= 19105)
+                       || (20101 <= foodGroupInt && foodGroupInt <= 20107) || (20201 <= foodGroupInt && foodGroupInt <= 20202)))
+            {
+                //Console.WriteLine("Fluid " + record.FoodGroup + " " + record.FoodName + " " + record.Weight_g);
+                beverageTotal += Weight_g;
+                if (11701 <= foodGroupInt && foodGroupInt <= 11703)
+                {
+                    waterTotal += Weight_g;
+                }
+            }
+        }
+
+        // Discretionary
+        public void CalculateDiscretionaryServe(int foodGroupInt, ref double discretionaryTotalEnergy)
+        {
+            if (Discretionary == true && (!(29101 <= foodGroupInt && foodGroupInt <= 29505)))
+            {
+                //Console.WriteLine("Discretionary " + record.FoodGroup + " " + record.Energy_kJ);
+                discretionaryTotalEnergy += Energy_kJ;
             }
         }
 
@@ -315,7 +379,7 @@ namespace WindowsFormsApp1
             bool beetroot = (beetrootCode.Contains(FoodGroup) && foodName.StringCheckKeyWords(beetrootKeyWord));
             if (beetroot)
             {
-                //Console.WriteLine("Sweet potato or beetroot by code " + FoodGroup + " " + foodName);
+                //Console.WriteLine("Sweet potato or beetroot by code: " + FoodGroup + " " + foodName);
                 vegVarietyPoints[2] = 1;
             }
 
@@ -325,7 +389,7 @@ namespace WindowsFormsApp1
             bool cauliflower = (cauliflowerCode.Contains(FoodGroup) && foodName.StringCheckKeyWords(cauliflowerKeyWord));
             if (cauliflower)
             {
-                //Console.WriteLine("Cauliflower by  code " + FoodGroup + " " + foodName);
+                //Console.WriteLine("Cauliflower by  code: " + FoodGroup + " " + foodName);
                 vegVarietyPoints[3] = 1;
             }
 
@@ -334,7 +398,7 @@ namespace WindowsFormsApp1
             bool greenBean = (greenBeanCode.Contains(FoodGroup));
             if (greenBean)
             {
-                //Console.WriteLine("Green beans by code " + FoodGroup + " " + foodName);
+                //Console.WriteLine("Green beans by code: " + FoodGroup + " " + foodName);
                 vegVarietyPoints[4] = 1;
             }
             // Spinach or kale or rocket

@@ -152,3 +152,18 @@ D:\GitHub\export\ICT-Project-master\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\
 D:\GitHub\ICT-Project\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\CircularProgressBar.dll
 D:\GitHub\ICT-Project\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\WinFormAnimation.dll
 D:\GitHub\ICT-Project\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.csproj.CopyComplete
+D:\GitHub\semii final\ICT-Project-master\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe.config
+D:\GitHub\semii final\ICT-Project-master\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe
+D:\GitHub\semii final\ICT-Project-master\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.pdb
+D:\GitHub\semii final\ICT-Project-master\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\CircularProgressBar.dll
+D:\GitHub\semii final\ICT-Project-master\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\WinFormAnimation.dll
+D:\GitHub\semii final\ICT-Project-master\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.csprojResolveAssemblyReference.cache
+D:\GitHub\semii final\ICT-Project-master\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Form1.resources
+D:\GitHub\semii final\ICT-Project-master\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Form2.resources
+D:\GitHub\semii final\ICT-Project-master\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.ImportForm.resources
+D:\GitHub\semii final\ICT-Project-master\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Properties.Resources.resources
+D:\GitHub\semii final\ICT-Project-master\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.csproj.GenerateResource.cache
+D:\GitHub\semii final\ICT-Project-master\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.csproj.CoreCompileInputs.cache
+D:\GitHub\semii final\ICT-Project-master\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.csproj.CopyComplete
+D:\GitHub\semii final\ICT-Project-master\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.exe
+D:\GitHub\semii final\ICT-Project-master\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.pdb

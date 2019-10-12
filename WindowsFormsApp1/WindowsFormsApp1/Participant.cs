@@ -77,6 +77,25 @@ namespace WindowsFormsApp1
             this.lactating = lactating;
         }
 
+        public void Reset()
+        {
+            VegTotal = 0;
+            AlcoholTotal = 0;
+            fruitTotal = 0;
+            grainTotal = 0;
+            wholeGrainProportion = 0;
+            proteinTotal = 0;
+            dairyTotal = 0;
+            reduceFatProportion = 0;
+            waterTotal = 0;
+            beverageTotal = 0;
+            spreadTotal = 0;
+            oilTotal = 0;
+            avocadoTotal = 0;
+            discretionaryTotalEnergy = 0;
+            FoodDict.Clear();
+        }
+
         public string UID { get => uID; set => uID = value; }
         public int Age { get => age; set => age = value; }
         public string Gender { get => gender; set => gender = value; }
@@ -115,20 +134,22 @@ namespace WindowsFormsApp1
         public double TotalAvocado { get => avocadoTotal; set => avocadoTotal = value; }
         public double DiscretionaryTotalEnergy { get => discretionaryTotalEnergy; set => discretionaryTotalEnergy = value; }
         public double Final_DGI { get => final_DGI; set => final_DGI = value; }
+        public double Total_Variety { get => total_Variety; set => total_Variety = value; }
 
         public override string ToString()
         {
             return "ID: " + UID + ", Age: " + Age.ToString() + ", Gender: " + Gender + ", Pregnant: " + Pregnant + ", Lactation :" + "" + Lactating + ", Vegetables: " + Veg_Score + ", Veg Variety: " + Veg_Variety +
-               ", Fruit: " + Fruit_Score + ", Fruit Variety: " + Fruit_Variety + ", Grain: " + Grain_Score + ", Whole Grain: " + WholeGrainProportion_Score + ", Grain Variety: " + Grain_Variety +
-               ", Protein: " + Protein_Score + ", Protein Variety: " + Protein_Variety + ", Dairy: " + Dairy_Score + ", Reduced Fat: " + ReducedFatProportion_Score + ", Dairy Variety: " + Dairy_Variety +
-               ", Alcohol: " + Alcohol_Score + ", Discretionary: " + Discretionary_Score +
-                ", Unsaturated: " + Unsaturated_Score + ", Fluid: " + Fluids_Score + ", Water Proportion: " + WaterProportion_Score;
+                       ", Fruit: " + Fruit_Score + ", Fruit Variety: " + Fruit_Variety + ", Grain: " + Grain_Score + ", Whole Grain: " + WholeGrainProportion_Score + ", Grain Variety: " + Grain_Variety +
+                       ", Protein: " + Protein_Score + ", Protein Variety: " + Protein_Variety + ", Dairy: " + Dairy_Score + ", Reduced Fat: " + ReducedFatProportion_Score + ", Dairy Variety: " + Dairy_Variety +
+                       ", Alcohol: " + Alcohol_Score + ", Discretionary: " + Discretionary_Score +
+                        ", Unsaturated: " + Unsaturated_Score + ", Fluid: " + Fluids_Score + ", Water Proportion: " + WaterProportion_Score;
         }
 
         // For testing
         public string ToString2()
         {
-            return "ID:" + uID + ", " + "Age:" + age.ToString() + ", " + gender + ", " + pregnant + ", " + "Lactation:" + lactating;
+        
+            return UID + ", Age: " + Age.ToString();
         }
 
         public int Compare(Participant x, Participant y)
@@ -207,57 +228,17 @@ namespace WindowsFormsApp1
                     record.CalculateReducedFatDairyServe(ref reduceFatProportion);
 
                     // Unsaturated spread and oil
-                    if (record.Discretionary == false && ((14301 <= foodGroupInt && foodGroupInt <= 14304)) || (14306 <= foodGroupInt && foodGroupInt <= 14307)
-                        || (14401 <= foodGroupInt && foodGroupInt <= 14403) || record.FoodGroup.Equals("22102") || record.FoodGroup.Equals("22202") ||
-                        record.FoodGroup.Equals("22204") || ((record.FoodGroup.Equals("24705")) && record.FoodName.CaseInsensitiveContains("Avocado")))
-                    {
-                        if (14401 <= foodGroupInt && foodGroupInt <= 14403)
-                        {
-                            oilTotal += record.Weight_g;
-                            //Console.WriteLine("Oil " + " " + record.FoodName + record.FoodGroup + " " + record.Weight_g);
-                        }
-                        if ((record.FoodGroup.Equals("24705")) && record.FoodName.CaseInsensitiveContains("Avocado"))
-                        {
-                            avocadoTotal += record.Weight_g;
-                            //Console.WriteLine("Avocado " + " " + record.FoodName + record.FoodGroup + " " + record.Weight_g);
-                        }
-                        else
-                        {
-                            spreadTotal += record.Weight_g;
-                            //Console.WriteLine("Spread " + " " + record.FoodName + record.FoodGroup + " " + record.Weight_g);
-                        }
-                    }
+                    record.CalculateUnsaturatedFatServe(foodGroupInt, ref oilTotal, ref avocadoTotal, ref spreadTotal);
 
 
                     // Alcohol
-                    if (record.Discretionary == true && ((29101 <= foodGroupInt && foodGroupInt <= 29505)))
-                    {
-                        //Console.WriteLine("Alcohol " + record.FoodGroup + " " + record.Alcoholic_drink_sd);
-                        alcoholTotal += record.Alcoholic_drink_sd;
-                    }
+                    record.CalculateAlcoholSD(foodGroupInt, ref alcoholTotal);
 
                     // Discretionary
-                    if (record.Discretionary == true && (!(29101 <= foodGroupInt && foodGroupInt <= 29505)))
-                    {
-                        //Console.WriteLine("Discretionary " + record.FoodGroup + " " + record.Energy_kJ);
-                        discretionaryTotalEnergy += record.Energy_kJ;
-                    }
+                    record.CalculateDiscretionaryServe(foodGroupInt, ref discretionaryTotalEnergy);
 
                     // Water and fluid
-                    if (record.Discretionary == false && ((11701 <= foodGroupInt && foodGroupInt <= 11703) ||
-                        (11101 <= foodGroupInt && foodGroupInt <= 11604) || (11801 <= foodGroupInt && foodGroupInt <= 11806) ||
-                        (19101 <= foodGroupInt && foodGroupInt <= 19105) || foodGroupInt == 19109
-                        || (19801 <= foodGroupInt && foodGroupInt <= 19806) || (19101 <= foodGroupInt && foodGroupInt <= 19105)
-                        || (20101 <= foodGroupInt && foodGroupInt <= 20107) || (20201 <= foodGroupInt && foodGroupInt <= 20202)))
-                    {
-                        //Console.WriteLine("Fluid " + record.FoodGroup + " " + record.FoodName + " " + record.Weight_g);
-                        beverageTotal += record.Weight_g;
-                        if (11701 <= foodGroupInt && foodGroupInt <= 11703)
-                        {
-                            waterTotal += record.Weight_g;
-                        }
-                    }
-
+                    record.calculateFluidWeight(foodGroupInt, ref beverageTotal, ref waterTotal);
 
                 }
             }
@@ -296,7 +277,9 @@ namespace WindowsFormsApp1
             Fruit_Variety = CalculateVarietyScore(fruitVarietyPoints);
             Dairy_Variety = CalculateVarietyScore(fruitVarietyPoints);
             Grain_Variety = CalculateVarietyScore(fruitVarietyPoints);
-
+            Total_Variety = Veg_Variety + Protein_Variety + Fruit_Variety + Dairy_Variety + Grain_Variety;
+            // final DGI 
+            Final_DGI = Total_Variety + Veg_Score + Fruit_Score + Grain_Score + Dairy_Score + Protein_Score + Discretionary_Score + Unsaturated_Score + Alcohol_Score;
 
         }
 
