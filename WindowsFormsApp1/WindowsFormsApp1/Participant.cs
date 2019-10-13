@@ -38,35 +38,36 @@ namespace WindowsFormsApp1
         private double total_Variety;
 
         // Serves
-        private double vegTotal = 0;
+        private double avg_Veg = 0;
 
         // Alcohol
-        private double alcoholTotal = 0;
+        private double avg_Alcohol = 0;
         // Fruit
-        private double fruitTotal = 0;
+        private double avg_Fruit = 0;
 
         // Grain
-        private double grainTotal = 0;
+        private double avg_Grain = 0;
         private double wholeGrainProportion = 0;
 
         // Lean meat
-        private double proteinTotal = 0;
+        private double avg_Protein = 0;
 
         // Dairy
-        private double dairyTotal = 0;
+        private double avg_Dairy = 0;
         private double reduceFatProportion = 0;
 
         // Water
-        private double waterTotal = 0;
-        private double beverageTotal = 0;
+        private double avg_Water = 0;
+        private double avg_BeverageWeight = 0;
 
         // Unsaturated
-        private double spreadTotal = 0;
-        private double oilTotal = 0;
-        private double avocadoTotal = 0;
+        private double avg_Spread = 0;
+        private double avg_Oil = 0;
+        private double avg_Avocado = 0;
+        private double avg_Unsaturated = 0;
 
         // Discretionary total
-        private double discretionaryTotalEnergy = 0;
+        private double avg_Discretionary = 0;
 
         public Participant(string uID, int age, string gender, string pregnant, string lactating)
         {
@@ -79,20 +80,20 @@ namespace WindowsFormsApp1
 
         public void Reset()
         {
-            VegTotal = 0;
-            AlcoholTotal = 0;
-            fruitTotal = 0;
-            grainTotal = 0;
-            wholeGrainProportion = 0;
-            proteinTotal = 0;
-            dairyTotal = 0;
-            reduceFatProportion = 0;
-            waterTotal = 0;
-            beverageTotal = 0;
-            spreadTotal = 0;
-            oilTotal = 0;
-            avocadoTotal = 0;
-            discretionaryTotalEnergy = 0;
+            Avg_Veg = 0;
+            Avg_Alcohol = 0;
+            Avg_Fruit = 0;
+            Avg_Grain = 0;
+            WholeGrainProportion = 0;
+            Avg_Protein = 0;
+            Avg_Dairy = 0;
+            ReduceFatProportion = 0;
+            Avg_Water = 0;
+            avg_BeverageWeight = 0;
+            Avg_Spread = 0;
+            Avg_Oil = 0;
+            Avg_Avocado = 0;
+            Avg_Discretionary = 0;
             FoodDict.Clear();
         }
 
@@ -119,22 +120,23 @@ namespace WindowsFormsApp1
         public double Protein_Score { get => protein_DGI; set => protein_DGI = value; }
         public double Dairy_Score { get => dairy_DGI; set => dairy_DGI = value; }
         public double ReducedFatProportion_Score { get => reducedFat_DGI; set => reducedFat_DGI = value; }
-        public double VegTotal { get => vegTotal; set => vegTotal = value; }
-        public double AlcoholTotal { get => alcoholTotal; set => alcoholTotal = value; }
-        public double FruitTotal { get => fruitTotal; set => fruitTotal = value; }
-        public double TotalGrain { get => grainTotal; set => grainTotal = value; }
-        public double TotalWholeGrain { get => wholeGrainProportion; set => wholeGrainProportion = value; }
-        public double TotalMeat { get => proteinTotal; set => proteinTotal = value; }
-        public double TotalDairy { get => dairyTotal; set => dairyTotal = value; }
-        public double TotalReducedFat { get => reduceFatProportion; set => reduceFatProportion = value; }
-        public double TotalWater { get => waterTotal; set => waterTotal = value; }
-        public double TotalBeverage { get => beverageTotal; set => beverageTotal = value; }
-        public double TotalSpread { get => spreadTotal; set => spreadTotal = value; }
-        public double TotalOil { get => oilTotal; set => oilTotal = value; }
-        public double TotalAvocado { get => avocadoTotal; set => avocadoTotal = value; }
-        public double DiscretionaryTotalEnergy { get => discretionaryTotalEnergy; set => discretionaryTotalEnergy = value; }
+        public double Avg_Veg { get => avg_Veg; set => avg_Veg = value; }
+        public double Avg_Alcohol { get => avg_Alcohol; set => avg_Alcohol = value; }
+        public double Avg_Fruit { get => avg_Fruit; set => avg_Fruit = value; }
+        public double Avg_Grain { get => avg_Grain; set => avg_Grain = value; }
+        public double WholeGrainProportion { get => wholeGrainProportion; set => wholeGrainProportion = value; }
+        public double Avg_Protein { get => avg_Protein; set => avg_Protein = value; }
+        public double Avg_Dairy { get => avg_Dairy; set => avg_Dairy = value; }
+        public double ReduceFatProportion { get => reduceFatProportion; set => reduceFatProportion = value; }
+        public double Avg_Water { get => avg_Water; set => avg_Water = value; }
+        public double Avg_BeverageWeight { get => avg_BeverageWeight; set => avg_BeverageWeight = value; }
+        public double Avg_Spread { get => avg_Spread; set => avg_Spread = value; }
+        public double Avg_Oil { get => avg_Oil; set => avg_Oil = value; }
+        public double Avg_Avocado { get => avg_Avocado; set => avg_Avocado = value; }
+        public double Avg_Discretionary { get => avg_Discretionary; set => avg_Discretionary = value; }
         public double Final_DGI { get => final_DGI; set => final_DGI = value; }
         public double Total_Variety { get => total_Variety; set => total_Variety = value; }
+        public double Avg_Unsaturated { get => avg_Unsaturated; set => avg_Unsaturated = value; }
 
         public override string ToString()
         {
@@ -148,7 +150,7 @@ namespace WindowsFormsApp1
         // For testing
         public string ToString2()
         {
-        
+
             return UID + ", Age: " + Age.ToString();
         }
 
@@ -174,6 +176,37 @@ namespace WindowsFormsApp1
             int[] grainVarietyPoints = new int[13];
             int[] proteinVarietyPoints = new int[12];
             int[] dairyVarietyPoints = new int[6];
+
+            // Serves
+            double vegTotal = 0;
+
+            // Alcohol
+            double alcoholTotal = 0;
+            // Fruit
+            double fruitTotal = 0;
+
+            // Grain
+            double grainTotal = 0;
+            double wholeGrainProportion = 0;
+
+            // Lean meat
+            double proteinTotal = 0;
+
+            // Dairy
+            double dairyTotal = 0;
+            double reduceFatProportion = 0;
+
+            // Water
+            double waterTotal = 0;
+            double beverageTotal = 0;
+
+            // Unsaturated
+            double spreadTotal = 0;
+            double oilTotal = 0;
+            double avocadoTotal = 0;
+
+            // Discretionary total
+            double discretionaryTotalEnergy = 0;
 
             List<String> abc = new List<String>();
             foreach (KeyValuePair<string, List<FoodRecord>> item in FoodDict)
@@ -295,8 +328,8 @@ namespace WindowsFormsApp1
 
         private double CalculateVegScore(double vegTotal)
         {
-            double avg_Veg = vegTotal / FoodDict.Count;
-            Console.WriteLine("Average serve for vegetables:" + uID + ":" + avg_Veg);
+            Avg_Veg = vegTotal / FoodDict.Count;
+            Console.WriteLine("Average serve for vegetables:" + uID + ":" + Avg_Veg);
             double recDailyServe = 1;
             if (string.Equals(Gender, "Male", StringComparison.OrdinalIgnoreCase))
             {
@@ -337,29 +370,29 @@ namespace WindowsFormsApp1
                     recDailyServe = 5;
                 }
             }
-            if (avg_Veg >= recDailyServe)
+            if (Avg_Veg >= recDailyServe)
             {
                 return 10;
             }
-            return avg_Veg * 10 / recDailyServe;
+            return Avg_Veg * 10 / recDailyServe;
         }
 
         private double CalculateFruitScore(double fruitTotal)
         {
-            double avg_Fruit = fruitTotal / FoodDict.Count;
+            Avg_Fruit = fruitTotal / FoodDict.Count;
             Console.WriteLine("Average serve for fruit:" + uID + ":" + avg_Fruit);
             double recDailyServe = 2;
-            if (avg_Fruit >= recDailyServe)
+            if (Avg_Fruit >= recDailyServe)
             {
                 return 10;
             }
-            return avg_Fruit * 10 / recDailyServe;
+            return Avg_Fruit * 10 / recDailyServe;
         }
 
         private double CalculateTotalGrainScore(double totalGrain)
         {
-            double avg_Grain = totalGrain / FoodDict.Count;
-            Console.WriteLine("Average weight for grain:" + uID + ":" + avg_Grain);
+            Avg_Grain = totalGrain / FoodDict.Count;
+            Console.WriteLine("Average weight for grain:" + uID + ":" + Avg_Grain);
             double recDailyServe = 1;
             if (string.Equals(Gender, "Male", StringComparison.OrdinalIgnoreCase))
             {
@@ -400,11 +433,11 @@ namespace WindowsFormsApp1
                     recDailyServe = 3;
                 }
             }
-            if (avg_Grain >= recDailyServe)
+            if (Avg_Grain >= recDailyServe)
             {
                 return 10;
             }
-            return avg_Grain * 5 / recDailyServe;
+            return Avg_Grain * 5 / recDailyServe;
         }
 
         private double CalculateWholeGrainProportionScore(double proportion)
@@ -419,8 +452,8 @@ namespace WindowsFormsApp1
 
         private double CalculateTotalProteinScore(double totalMeat)
         {
-            double avg_Meat = totalMeat / FoodDict.Count;
-            Console.WriteLine("Average weight for meat:" + uID + ":" + avg_Meat);
+            Avg_Protein = totalMeat / FoodDict.Count;
+            Console.WriteLine("Average weight for meat:" + uID + ":" + Avg_Protein);
             double recDailyServe = 1;
             if (string.Equals(Gender, "Male", StringComparison.OrdinalIgnoreCase))
             {
@@ -461,17 +494,17 @@ namespace WindowsFormsApp1
                     recDailyServe = 2;
                 }
             }
-            if (avg_Meat >= recDailyServe)
+            if (Avg_Protein >= recDailyServe)
             {
                 return 10;
             }
-            return avg_Meat * 10 / recDailyServe;
+            return Avg_Protein * 10 / recDailyServe;
         }
 
         private double CalculateTotalDairyScore(double totalDairy)
         {
-            double avg_Dairy = totalDairy / FoodDict.Count;
-            Console.WriteLine("Average weight for dairy:" + uID + ":" + avg_Dairy);
+            double Avg_Dairy = totalDairy / FoodDict.Count;
+            Console.WriteLine("Average weight for dairy:" + uID + ":" + Avg_Dairy);
             double recDailyServe = 1;
             if (string.Equals(Gender, "Male", StringComparison.OrdinalIgnoreCase))
             {
@@ -512,11 +545,11 @@ namespace WindowsFormsApp1
                     recDailyServe = 4;
                 }
             }
-            if (avg_Dairy >= recDailyServe)
+            if (Avg_Dairy >= recDailyServe)
             {
                 return 10;
             }
-            return avg_Dairy * 5 / recDailyServe;
+            return Avg_Dairy * 5 / recDailyServe;
         }
 
         private double CalculateReducedFatProportionScore(double proportion)
@@ -531,10 +564,10 @@ namespace WindowsFormsApp1
 
         private double CalculateTotalBeverageScore(double totalBeverage)
         {
-            double avg_BeverageWeight = totalBeverage / FoodDict.Count;
+            Avg_BeverageWeight = totalBeverage / FoodDict.Count;
             double totalBeverageServe = totalBeverage / 250;
             double avg_BeverageServe = totalBeverageServe / FoodDict.Count;
-            Console.WriteLine("Average weight for fluid:" + uID + ":" + avg_BeverageWeight);
+            Console.WriteLine("Average weight for fluid:" + uID + ":" + Avg_BeverageWeight);
             if (string.Equals(Gender, "Male", StringComparison.OrdinalIgnoreCase) && avg_BeverageServe >= 10)
             {
                 return 5;
@@ -544,7 +577,7 @@ namespace WindowsFormsApp1
                 return 5;
             }
             // 250 or 2000?
-            return avg_BeverageWeight * 5 / 2000;
+            return Avg_BeverageWeight * 5 / 2000;
         }
 
         private double CalculateWaterProportionScore(double proportion)
@@ -559,11 +592,11 @@ namespace WindowsFormsApp1
 
         private double CalculateUnsaturatedScore(double unsaturatedServe)
         {
-            double avg_Unsaturated = unsaturatedServe / FoodDict.Count;
-            Console.WriteLine("Average serve for Unsaturated Fat:" + uID + ":" + avg_Unsaturated);
+            Avg_Unsaturated = unsaturatedServe / FoodDict.Count;
+            Console.WriteLine("Average serve for Unsaturated Fat:" + uID + ":" + Avg_Unsaturated);
             if (Age > 70)
             {
-                if (avg_Unsaturated < 1 || avg_Unsaturated > 2)
+                if (Avg_Unsaturated < 1 || Avg_Unsaturated > 2)
                 {
                     return 0;
                 }
@@ -571,7 +604,7 @@ namespace WindowsFormsApp1
             }
             if (string.Equals(Gender, "Male", StringComparison.OrdinalIgnoreCase))
             {
-                if (avg_Unsaturated > 4 || avg_Unsaturated < 1)
+                if (Avg_Unsaturated > 4 || Avg_Unsaturated < 1)
                 {
                     return 0;
                 }
@@ -579,7 +612,7 @@ namespace WindowsFormsApp1
             }
             if (string.Equals(Gender, "Female", StringComparison.OrdinalIgnoreCase))
             {
-                if (avg_Unsaturated > 2 || avg_Unsaturated < 1)
+                if (Avg_Unsaturated > 2 || Avg_Unsaturated < 1)
                 {
                     return 0;
                 }
@@ -590,10 +623,10 @@ namespace WindowsFormsApp1
 
         private double CalculateAlcoholScore(double alcoholTotal)
         {
-            double avg_Alcohol = alcoholTotal / FoodDict.Count;
-            Console.WriteLine("Average serve for Alcohol:" + uID + ":" + avg_Alcohol);
+            Avg_Alcohol = alcoholTotal / FoodDict.Count;
+            Console.WriteLine("Average serve for Alcohol:" + uID + ":" + Avg_Alcohol);
 
-            if (avg_Alcohol > 2)
+            if (Avg_Alcohol > 2)
             {
                 return 0;
             }
@@ -602,13 +635,13 @@ namespace WindowsFormsApp1
 
         private double CalculateDiscretionaryScore(double discretionaryServe)
         {
-            double avg_Discretionary = discretionaryServe / FoodDict.Count;
+            Avg_Discretionary = discretionaryServe / FoodDict.Count;
             double discretionaryScore = 0;
-            Console.WriteLine("Average serve for Discretionary:" + uID + ":" + avg_Discretionary);
+            Console.WriteLine("Average serve for Discretionary:" + uID + ":" + Avg_Discretionary);
             double recDailyServe = 1;
             if (string.Equals(Gender, "Male", StringComparison.OrdinalIgnoreCase))
             {
-                if (avg_Discretionary > 3)
+                if (Avg_Discretionary > 3)
                 {
                     return 0;
                 }
@@ -619,7 +652,7 @@ namespace WindowsFormsApp1
             }
             else if (string.Equals(Gender, "Female", StringComparison.OrdinalIgnoreCase))
             {
-                if (avg_Discretionary > 2.5)
+                if (Avg_Discretionary > 2.5)
                 {
                     return 0;
                 }
@@ -628,7 +661,7 @@ namespace WindowsFormsApp1
                     recDailyServe = 2.5;
                 }
             }
-            discretionaryScore = 30 - (avg_Discretionary * 30 / recDailyServe);
+            discretionaryScore = 30 - (Avg_Discretionary * 30 / recDailyServe);
             return discretionaryScore;
         }
     }

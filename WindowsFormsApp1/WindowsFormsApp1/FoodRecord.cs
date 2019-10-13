@@ -258,7 +258,7 @@ namespace WindowsFormsApp1
         {
             if (Discretionary == true && ((29101 <= foodGroupInt && foodGroupInt <= 29505)))
             {
-                //Console.WriteLine("Alcohol " + record.FoodGroup + " " + record.Alcoholic_drink_sd);
+                Console.WriteLine("Alcohol " + FoodGroup + " " + Alcoholic_drink_sd);
                 alcoholTotal += Alcoholic_drink_sd;
             }
         }

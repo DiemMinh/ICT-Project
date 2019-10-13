@@ -62,12 +62,16 @@ namespace WindowsFormsApp1
 
         private void ImportForm_Load(object sender, EventArgs e)
         {
+            string executable = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            string path = (System.IO.Path.GetDirectoryName(executable));
+            AppDomain.CurrentDomain.SetData("DataDirectory", path);
+
+            discretionaryConnection.ConnectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|\discretionary food.accdb; Persist Security Info=False;";
+            discretionaryImport();
         }
+
         public void importUser()
         {
-
-
-
             try
             {
                 connection.Open();
