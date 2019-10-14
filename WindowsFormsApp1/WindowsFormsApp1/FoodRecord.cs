@@ -258,7 +258,7 @@ namespace WindowsFormsApp1
         {
             if (Discretionary == true && ((29101 <= foodGroupInt && foodGroupInt <= 29505)))
             {
-                Console.WriteLine("Alcohol " + FoodGroup + " " + Alcoholic_drink_sd);
+                //Console.WriteLine("Alcohol " + record.FoodGroup + " " + record.Alcoholic_drink_sd);
                 alcoholTotal += Alcoholic_drink_sd;
             }
         }
@@ -1077,7 +1077,7 @@ namespace WindowsFormsApp1
             if (FoodName.StringCheckKeyWords(banana))
             {
                 Console.WriteLine("Banana by keyword: " + FoodGroup + " " + foodName);
-                fruitVarietyPoints[3] = 1;
+                fruitVarietyPoints[5] = 1;
                 inVarietyFruit = true;
             }
 
@@ -1085,7 +1085,7 @@ namespace WindowsFormsApp1
             if (FoodName.StringCheckKeyWords(peach))
             {
                 Console.WriteLine("Peach, nectarine by keyword: " + FoodGroup + " " + foodName);
-                fruitVarietyPoints[5] = 1;
+                fruitVarietyPoints[6] = 1;
                 inVarietyFruit = true;
             }
 

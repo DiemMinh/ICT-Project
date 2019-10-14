@@ -167,3 +167,33 @@ D:\GitHub\semii final\ICT-Project-master\WindowsFormsApp1\WindowsFormsApp1\obj\D
 D:\GitHub\semii final\ICT-Project-master\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.csproj.CopyComplete
 D:\GitHub\semii final\ICT-Project-master\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.exe
 D:\GitHub\semii final\ICT-Project-master\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.pdb
+D:\dao\VB\ICT-Project\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.csprojAssemblyReference.cache
+D:\dao\VB\ICT-Project\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.exe
+D:\dao\VB\ICT-Project\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.pdb
+D:\dao\VB\ICT-Project\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe.config
+D:\dao\VB\ICT-Project\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe
+D:\dao\VB\ICT-Project\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.pdb
+D:\dao\VB\ICT-Project\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\CircularProgressBar.dll
+D:\dao\VB\ICT-Project\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\WinFormAnimation.dll
+D:\dao\VB\ICT-Project\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Form1.resources
+D:\dao\VB\ICT-Project\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Form2.resources
+D:\dao\VB\ICT-Project\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.ImportForm.resources
+D:\dao\VB\ICT-Project\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Properties.Resources.resources
+D:\dao\VB\ICT-Project\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.csproj.GenerateResource.cache
+D:\dao\VB\ICT-Project\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.csproj.CoreCompileInputs.cache
+D:\dao\VB\ICT-Project\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.csproj.CopyComplete
+C:\Users\USER\Downloads\ICT-Project (2)\ICT-Project\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe.config
+C:\Users\USER\Downloads\ICT-Project (2)\ICT-Project\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe
+C:\Users\USER\Downloads\ICT-Project (2)\ICT-Project\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.pdb
+C:\Users\USER\Downloads\ICT-Project (2)\ICT-Project\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\CircularProgressBar.dll
+C:\Users\USER\Downloads\ICT-Project (2)\ICT-Project\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\WinFormAnimation.dll
+C:\Users\USER\Downloads\ICT-Project (2)\ICT-Project\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.csprojResolveAssemblyReference.cache
+C:\Users\USER\Downloads\ICT-Project (2)\ICT-Project\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Form1.resources
+C:\Users\USER\Downloads\ICT-Project (2)\ICT-Project\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Form2.resources
+C:\Users\USER\Downloads\ICT-Project (2)\ICT-Project\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.ImportForm.resources
+C:\Users\USER\Downloads\ICT-Project (2)\ICT-Project\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Properties.Resources.resources
+C:\Users\USER\Downloads\ICT-Project (2)\ICT-Project\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.csproj.GenerateResource.cache
+C:\Users\USER\Downloads\ICT-Project (2)\ICT-Project\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.csproj.CoreCompileInputs.cache
+C:\Users\USER\Downloads\ICT-Project (2)\ICT-Project\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.csproj.CopyComplete
+C:\Users\USER\Downloads\ICT-Project (2)\ICT-Project\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.exe
+C:\Users\USER\Downloads\ICT-Project (2)\ICT-Project\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.pdb

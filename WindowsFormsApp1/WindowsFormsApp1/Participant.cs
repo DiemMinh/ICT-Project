@@ -57,7 +57,7 @@ namespace WindowsFormsApp1
         private double reduceFatProportion = 0;
 
         // Water
-        private double avg_Water = 0;
+        private double waterProportion = 0;
         private double avg_BeverageWeight = 0;
 
         // Unsaturated
@@ -88,7 +88,7 @@ namespace WindowsFormsApp1
             Avg_Protein = 0;
             Avg_Dairy = 0;
             ReduceFatProportion = 0;
-            Avg_Water = 0;
+            WaterProportion = 0;
             avg_BeverageWeight = 0;
             Avg_Spread = 0;
             Avg_Oil = 0;
@@ -106,7 +106,7 @@ namespace WindowsFormsApp1
         public double Veg_Score { get => veg_DGI; set => veg_DGI = value; }
         public double Fruit_Score { get => fruit_DGI; set => fruit_DGI = value; }
         public double Alcohol_Score { get => alcohol_DGI; set => alcohol_DGI = value; }
-        private double Discretionary_Score { get => discretionary_DGI; set => discretionary_DGI = value; }
+        public double Discretionary_Score { get => discretionary_DGI; set => discretionary_DGI = value; }
         public double Unsaturated_Score { get => unsaturated_DGI; set => unsaturated_DGI = value; }
         public double WaterProportion_Score { get => waterProportion_DGI; set => waterProportion_DGI = value; }
         public double Fluids_Score { get => fluids_DGI; set => fluids_DGI = value; }
@@ -128,7 +128,7 @@ namespace WindowsFormsApp1
         public double Avg_Protein { get => avg_Protein; set => avg_Protein = value; }
         public double Avg_Dairy { get => avg_Dairy; set => avg_Dairy = value; }
         public double ReduceFatProportion { get => reduceFatProportion; set => reduceFatProportion = value; }
-        public double Avg_Water { get => avg_Water; set => avg_Water = value; }
+        public double WaterProportion { get => waterProportion; set => waterProportion = value; }
         public double Avg_BeverageWeight { get => avg_BeverageWeight; set => avg_BeverageWeight = value; }
         public double Avg_Spread { get => avg_Spread; set => avg_Spread = value; }
         public double Avg_Oil { get => avg_Oil; set => avg_Oil = value; }
@@ -187,14 +187,14 @@ namespace WindowsFormsApp1
 
             // Grain
             double grainTotal = 0;
-            double wholeGrainProportion = 0;
+            double wholeGrainTotal = 0;
 
             // Lean meat
             double proteinTotal = 0;
 
             // Dairy
             double dairyTotal = 0;
-            double reduceFatProportion = 0;
+            double reduceFatTotal = 0;
 
             // Water
             double waterTotal = 0;
@@ -250,7 +250,7 @@ namespace WindowsFormsApp1
                     // Grain and wholegrain
                     record.CalculateGrainServe(ref grainTotal);
                     // Proportion of wholegrain
-                    record.CalculateWholeGrainServe(ref wholeGrainProportion);
+                    record.CalculateWholeGrainServe(ref wholeGrainTotal);
 
                     // Meat
                     record.CalculateProteinServe(foodGroupInt, ref proteinTotal);
@@ -258,7 +258,7 @@ namespace WindowsFormsApp1
                     // Dairy
                     record.CalculateDairyServe(foodGroupInt, ref dairyTotal);
                     // Reduced fat
-                    record.CalculateReducedFatDairyServe(ref reduceFatProportion);
+                    record.CalculateReducedFatDairyServe(ref reduceFatTotal);
 
                     // Unsaturated spread and oil
                     record.CalculateUnsaturatedFatServe(foodGroupInt, ref oilTotal, ref avocadoTotal, ref spreadTotal);
@@ -291,19 +291,22 @@ namespace WindowsFormsApp1
             Protein_Score = CalculateTotalProteinScore(proteinTotal);
             // Grain DGI
             Grain_Score = CalculateTotalGrainScore(grainTotal);
-            WholeGrainProportion_Score = CalculateWholeGrainProportionScore(CalculateProportion(wholeGrainProportion, grainTotal));
+            wholeGrainProportion = CalculateProportion(wholeGrainTotal, grainTotal);
+            WholeGrainProportion_Score = CalculateWholeGrainProportionScore(wholeGrainProportion);
             // Dairy DGI
             Dairy_Score = CalculateTotalDairyScore(dairyTotal);
-            ReducedFatProportion_Score = CalculateReducedFatProportionScore(CalculateProportion(reduceFatProportion, dairyTotal));
+            reduceFatProportion = CalculateProportion(reduceFatTotal, dairyTotal);
+            ReducedFatProportion_Score = CalculateReducedFatProportionScore(reduceFatProportion);
             // Fluid DGI
             Fluids_Score = CalculateTotalBeverageScore(beverageTotal);
-            waterProportion_DGI = CalculateWaterProportionScore(CalculateProportion(waterTotal, beverageTotal));
+            WaterProportion = CalculateProportion(waterTotal, beverageTotal);
+            waterProportion_DGI = CalculateWaterProportionScore(waterProportion);
             // Alcohol DGI
             Alcohol_Score = CalculateAlcoholScore(alcoholTotal);
             // Discretionary DGI
             Discretionary_Score = CalculateDiscretionaryScore(discretionaryTotalEnergy / 600);
             // USFA DGI
-            Unsaturated_Score = CalculateUnsaturatedScore(oilTotal / 7 + spreadTotal / 10 + avocadoTotal / 30);
+            Unsaturated_Score = CalculateUnsaturatedScore(oilTotal, spreadTotal, avocadoTotal);
             // Variety DGI
             Veg_Variety = CalculateVarietyScore(vegVarietyPoints);
             Protein_Variety = CalculateVarietyScore(fruitVarietyPoints);
@@ -318,6 +321,10 @@ namespace WindowsFormsApp1
 
         private double CalculateProportion(double part, double total)
         {
+            if (total == 0)
+            {
+                return 0;
+            }
             return (part / total) * 100;
         }
 
@@ -590,8 +597,12 @@ namespace WindowsFormsApp1
             return 0;
         }
 
-        private double CalculateUnsaturatedScore(double unsaturatedServe)
+        private double CalculateUnsaturatedScore(double oilTotal, double spreadTotal, double avocadoTotal)
         {
+            Avg_Oil = oilTotal / (7 * FoodDict.Count);
+            Avg_Spread = spreadTotal / (10 * FoodDict.Count);
+            Avg_Avocado = avocadoTotal / (30 * FoodDict.Count);
+            double unsaturatedServe = oilTotal / 7 + spreadTotal / 10 + avocadoTotal / 30;
             Avg_Unsaturated = unsaturatedServe / FoodDict.Count;
             Console.WriteLine("Average serve for Unsaturated Fat:" + uID + ":" + Avg_Unsaturated);
             if (Age > 70)

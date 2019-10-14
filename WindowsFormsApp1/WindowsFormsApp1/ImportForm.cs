@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Office.Interop.Excel;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -68,10 +69,14 @@ namespace WindowsFormsApp1
 
             discretionaryConnection.ConnectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|\discretionary food.accdb; Persist Security Info=False;";
             discretionaryImport();
-        }
 
+
+        }
         public void importUser()
         {
+
+
+
             try
             {
                 connection.Open();
@@ -285,7 +290,102 @@ namespace WindowsFormsApp1
 
         private void button2_Click(object sender, EventArgs e)
         {
-
+            using (SaveFileDialog sfd = new SaveFileDialog { Filter = "Excel Workbook|*.xls", ValidateNames = true })
+            {
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    Microsoft.Office.Interop.Excel.Application app = new Microsoft.Office.Interop.Excel.Application();
+                    Workbook wb = app.Workbooks.Add(XlSheetType.xlWorksheet);
+                    Worksheet ws = (Worksheet)app.ActiveSheet;
+                    app.Visible = false;
+                    ws.Cells[1, 1] = "ID";
+                    ws.Cells[1, 2] = "Age";
+                    ws.Cells[1, 3] = "Gender";
+                    ws.Cells[1, 4] = "Pregnant";
+                    ws.Cells[1, 5] = "Lactatating";
+                    ws.Cells[1, 6] = "final_DGI";
+                    ws.Cells[1, 7] = "veg_Variety";
+                    ws.Cells[1, 8] = "fruit_Variety";
+                    ws.Cells[1, 9] = "grain_Variety";
+                    ws.Cells[1, 10] = "protein_Variety";
+                    ws.Cells[1, 11] = "dairy_Variety";
+                    ws.Cells[1, 12] = "Variety_DGI";
+                    ws.Cells[1, 13] = "avg_Veg";
+                    ws.Cells[1, 14] = "Veg_DGI";
+                    ws.Cells[1, 15] = "avg_Fruit";
+                    ws.Cells[1, 16] = "Fruit_DGI";
+                    ws.Cells[1, 17] = "avg_Grain";
+                    ws.Cells[1, 18] = "Grain_DGI";
+                    ws.Cells[1, 19] = "wholeGrainProportion";
+                    ws.Cells[1, 20] = "WholeGrain_DGI";
+                    ws.Cells[1, 21] = "avg_Protein";
+                    ws.Cells[1, 22] = "Protein_DGI";
+                    ws.Cells[1, 23] = "avg_Dairy";
+                    ws.Cells[1, 24] = "Dairy_DGI";
+                    ws.Cells[1, 25] = "reduceFatProportion";
+                    ws.Cells[1, 26] = "ReducedFat_DGI";
+                    ws.Cells[1, 27] = "avg_Discretionary";
+                    ws.Cells[1, 28] = "Discretionary_DGI";
+                    ws.Cells[1, 29] = "avg_Alcohol";
+                    ws.Cells[1, 30] = "Alcohol_DGI";
+                    ws.Cells[1, 31] = "avg_BeverageWeight";
+                    ws.Cells[1, 32] = "fluids_DGI";
+                    ws.Cells[1, 33] = "waterProportion";
+                    ws.Cells[1, 34] = "WaterProportion_DGI";
+                    ws.Cells[1, 35] = "avg_Spread";
+                    ws.Cells[1, 36] = "avg_Oil";
+                    ws.Cells[1, 37] = "avg_Avocado";
+                    ws.Cells[1, 38] = "avg_Unsaturated";
+                    ws.Cells[1, 39] = "Unsaturated_DGI";
+                    int i = 2;
+                    foreach (Participant item in participantList)
+                    {
+                        ws.Cells[i, 1] = item.UID;
+                        ws.Cells[i, 2] = item.Age;
+                        ws.Cells[i, 3] = item.Gender;
+                        ws.Cells[i, 4] = item.Pregnant;
+                        ws.Cells[i, 5] = item.Lactating;
+                        ws.Cells[i, 6] = item.Final_DGI;
+                        ws.Cells[i, 7] = item.Veg_Variety;
+                        ws.Cells[i, 8] = item.Fruit_Variety;
+                        ws.Cells[i, 9] = item.Grain_Variety;
+                        ws.Cells[i, 10] = item.Protein_Variety;
+                        ws.Cells[i, 11] = item.Dairy_Variety;
+                        ws.Cells[i, 12] = item.Total_Variety;
+                        ws.Cells[i, 13] = item.Avg_Veg;
+                        ws.Cells[i, 14] = item.Veg_Score;
+                        ws.Cells[i, 15] = item.Avg_Fruit;
+                        ws.Cells[i, 16] = item.Fruit_Score;
+                        ws.Cells[i, 17] = item.Avg_Grain;
+                        ws.Cells[i, 18] = item.Grain_Score;
+                        ws.Cells[i, 19] = item.WholeGrainProportion;
+                        ws.Cells[i, 20] = item.WholeGrainProportion_Score;
+                        ws.Cells[i, 21] = item.Avg_Protein;
+                        ws.Cells[i, 22] = item.Protein_Score;
+                        ws.Cells[i, 23] = item.Avg_Dairy;
+                        ws.Cells[i, 24] = item.Dairy_Score;
+                        ws.Cells[i, 25] = item.ReduceFatProportion;
+                        ws.Cells[i, 26] = item.ReducedFatProportion_Score;
+                        ws.Cells[i, 27] = item.Avg_Discretionary;
+                        ws.Cells[i, 28] = item.Discretionary_Score;
+                        ws.Cells[i, 29] = item.Avg_Alcohol;
+                        ws.Cells[i, 30] = item.Alcohol_Score;
+                        ws.Cells[i, 31] = item.Avg_BeverageWeight;
+                        ws.Cells[i, 32] = item.Fluids_Score;
+                        ws.Cells[i, 33] = item.WaterProportion;
+                        ws.Cells[i, 34] = item.WaterProportion_Score;
+                        ws.Cells[i, 35] = item.Avg_Spread;
+                        ws.Cells[i, 36] = item.Avg_Oil;
+                        ws.Cells[i, 37] = item.Avg_Avocado;
+                        ws.Cells[i, 38] = item.Avg_Unsaturated;
+                        ws.Cells[i, 39] = item.Unsaturated_Score;
+                        i++;
+                    }
+                    wb.SaveAs(sfd.FileName, XlFileFormat.xlWorkbookDefault, Type.Missing, Type.Missing, true, false, XlSaveAsAccessMode.xlNoChange, XlSaveConflictResolution.xlLocalSessionChanges, Type.Missing, Type.Missing);
+                    app.Quit();
+                    MessageBox.Show("Your data has been sucessfully exported.", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
         }
     }
 
