@@ -95,10 +95,16 @@ namespace WindowsFormsApp1
                     Participant userID = new Participant(reader["Name"].ToString(), Int32.Parse(reader["Age"].ToString()), reader["Gender"].ToString(), reader["Pregnancy"].ToString(), reader["Lactation"].ToString());
                     checkedListBox1.Items.Add(userID);
                 }
-                connection.Close();
+                
 
             }
-            catch (Exception ex) { MessageBox.Show("opps" + ex); }
+            catch (Exception ex) {
+                MessageBox.Show("Failed to import file ! Should be import file Snack Study Baseline Food Diaries.MDF");
+            }
+            finally
+            {
+                connection.Close();
+            }
         }
 
 
@@ -297,6 +303,7 @@ namespace WindowsFormsApp1
                     Microsoft.Office.Interop.Excel.Application app = new Microsoft.Office.Interop.Excel.Application();
                     Workbook wb = app.Workbooks.Add(XlSheetType.xlWorksheet);
                     Worksheet ws = (Worksheet)app.ActiveSheet;
+                    
                     app.Visible = false;
                     ws.Cells[1, 1] = "ID";
                     ws.Cells[1, 2] = "Age";
@@ -337,6 +344,8 @@ namespace WindowsFormsApp1
                     ws.Cells[1, 37] = "avg_Avocado";
                     ws.Cells[1, 38] = "avg_Unsaturated";
                     ws.Cells[1, 39] = "Unsaturated_DGI";
+                    ws.Columns.AutoFit();
+                    ws.Rows.AutoFit();
                     int i = 2;
                     foreach (Participant item in participantList)
                     {
@@ -379,6 +388,8 @@ namespace WindowsFormsApp1
                         ws.Cells[i, 37] = item.Avg_Avocado;
                         ws.Cells[i, 38] = item.Avg_Unsaturated;
                         ws.Cells[i, 39] = item.Unsaturated_Score;
+                        ws.Columns.AutoFit();
+                        ws.Rows.AutoFit();
                         i++;
                     }
                     wb.SaveAs(sfd.FileName, XlFileFormat.xlWorkbookDefault, Type.Missing, Type.Missing, true, false, XlSaveAsAccessMode.xlNoChange, XlSaveConflictResolution.xlLocalSessionChanges, Type.Missing, Type.Missing);
